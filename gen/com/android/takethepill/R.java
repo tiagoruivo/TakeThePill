@@ -16,8 +16,9 @@ public final class R {
     }
     public static final class id {
         public static final int confirm=0x7f050003;
-        public static final int hour=0x7f050002;
+        public static final int hour=0x7f050004;
         public static final int pill=0x7f050001;
+        public static final int timepicker=0x7f050002;
         public static final int user=0x7f050000;
     }
     public static final class layout {
