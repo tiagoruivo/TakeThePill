@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TakeThePill</string>
+    <string name="no_pills">No medicines yet</string>
+    <string name="menu_insert">Add Pill</string>
+    <string name="menu_delete">Delete Pill</string>
+    <string name="edit_pill">Edit Pill</string>
+    <string name="confirm">Confirm</string>
+    <string name="user">User</string>
+    <string name="pill">Pill</string>
+    <string name="hour">Hour</string>
+    
+    
+</resources>
