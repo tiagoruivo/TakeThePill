@@ -16,12 +16,17 @@
 
 package com.android.takethepill;
 
+import java.util.Calendar;
+
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 public class PillEdit extends Activity {
@@ -30,8 +35,15 @@ public class PillEdit extends Activity {
 	private EditText mPillText;
 	private Long mRowId;
 	private PillsDbAdapter mDbHelper;
-	private TimePicker timePicker;
-	private String mTimeDisplay;
+	//private TimePicker timePicker;
+
+	private String mTimeString;
+	private TextView mTimeText;
+
+	private int mHour;
+	private int mMinute;
+	static final int TIME_DIALOG_ID = 0;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +56,11 @@ public class PillEdit extends Activity {
 
 		mUserText = (EditText) findViewById(R.id.user);
 		mPillText = (EditText) findViewById(R.id.pill);
-		timePicker = (TimePicker) findViewById(R.id.timepicker);
+
+		mTimeText = (TextView) findViewById(R.id.textHour);
 		Button confirmButton = (Button) findViewById(R.id.confirm);
+
+		Button addTimeButton = (Button) findViewById(R.id.addtime);
 
 		mRowId = (savedInstanceState == null) ? null :
 			(Long) savedInstanceState.getSerializable(PillsDbAdapter.KEY_ROWID);
@@ -54,18 +69,6 @@ public class PillEdit extends Activity {
 			mRowId = extras != null ? extras.getLong(PillsDbAdapter.KEY_ROWID)
 					: null;
 		}
-		
-		timePicker.setCurrentHour(12);
-		timePicker.setCurrentMinute(0);
-		updateDisplay(12, 0);
-		
-
-		timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-
-			public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-				updateDisplay(hourOfDay, minute);
-			}
-		});
 
 		populateFields();
 
@@ -77,12 +80,36 @@ public class PillEdit extends Activity {
 			}
 
 		});
+
+		addTimeButton.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View view) {
+				//codigo para cuando se pulsa el boton: lanzar time spiner
+				showDialog(TIME_DIALOG_ID);
+			}
+
+		});		
+		final Calendar c = Calendar.getInstance();        
+		mHour = c.get(Calendar.HOUR_OF_DAY);
+		mMinute = c.get(Calendar.MINUTE);
+		//updateTime(mHour, mMinute);
+
 	}
 
-	private void updateDisplay(int hourOfDay, int minute) {
-		mTimeDisplay= new StringBuilder()
-		.append(pad(hourOfDay)).append(":")
-		.append(pad(minute)).toString();
+	private void updateTime(int hourOfDay, int minute) {
+
+		if(mTimeString==null){
+			mTimeString= new StringBuilder()
+			.append(pad(hourOfDay)).append(":")
+			.append(pad(minute)).toString();
+		} else {
+			StringBuilder vieja = new StringBuilder(mTimeString).append(" - ");
+			StringBuilder nueva = vieja
+					.append(pad(hourOfDay)).append(":")
+					.append(pad(minute));
+
+			mTimeString = nueva.toString();
+		}
 	}
 
 	private static String pad(int c) {
@@ -93,7 +120,7 @@ public class PillEdit extends Activity {
 	}
 
 	private void populateFields() {
-		
+
 		if (mRowId != null) {
 			Cursor pillcursor = mDbHelper.fetchPill(mRowId);
 			startManagingCursor(pillcursor);
@@ -101,13 +128,11 @@ public class PillEdit extends Activity {
 					pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_USER)));
 			mPillText.setText(pillcursor.getString(
 					pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_PILL)));
-			String tiempo = pillcursor.getString(pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_HOUR));
-			String [] t= tiempo.split(":");
-			int hora= Integer.parseInt(t[0]);
-			int min= Integer.parseInt(t[1]);
-			timePicker.setCurrentHour(hora);
-			timePicker.setCurrentMinute(min);
-			updateDisplay(hora, min);
+
+			
+		}
+		if(mTimeString!=null){
+			mTimeText.setText(mTimeString);
 		}
 	}
 
@@ -133,7 +158,7 @@ public class PillEdit extends Activity {
 	private void saveState() {
 		String user = mUserText.getText().toString();
 		String pill = mPillText.getText().toString();
-		String hour = mTimeDisplay;
+		String hour = mTimeString;
 
 		if (mRowId == null) {
 			long id = mDbHelper.createPill(user, pill, hour);
@@ -144,5 +169,33 @@ public class PillEdit extends Activity {
 			mDbHelper.updatePill(mRowId, user, pill, hour);
 		}
 	}
+
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case TIME_DIALOG_ID:
+			return new TimePickerDialog(this,
+					mTimeSetListener, mHour, mMinute, true);            
+		}
+		return null;
+	}
+	@Override
+	protected void onPrepareDialog(int id, Dialog dialog) {
+		switch (id) {
+		case TIME_DIALOG_ID:
+			((TimePickerDialog) dialog).updateTime(mHour, mMinute);
+			break;            
+		}
+	}  
+	private TimePickerDialog.OnTimeSetListener mTimeSetListener =
+			new TimePickerDialog.OnTimeSetListener() {
+
+		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+			mHour = hourOfDay;
+			mMinute = minute;
+			updateTime(mHour, mMinute);
+			populateFields();
+		}
+	};
 
 }

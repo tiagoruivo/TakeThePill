@@ -15,10 +15,11 @@ public final class R {
         public static final int icon=0x7f020001;
     }
     public static final class id {
-        public static final int confirm=0x7f050003;
-        public static final int hour=0x7f050004;
+        public static final int addtime=0x7f050003;
+        public static final int confirm=0x7f050004;
+        public static final int hour=0x7f050005;
         public static final int pill=0x7f050001;
-        public static final int timepicker=0x7f050002;
+        public static final int textHour=0x7f050002;
         public static final int user=0x7f050000;
     }
     public static final class layout {
@@ -27,14 +28,16 @@ public final class R {
         public static final int pills_row=0x7f030002;
     }
     public static final class string {
+        public static final int add_time=0x7f040006;
         public static final int app_name=0x7f040000;
         public static final int confirm=0x7f040005;
         public static final int edit_pill=0x7f040004;
-        public static final int hour=0x7f040008;
+        public static final int hour=0x7f04000a;
         public static final int menu_delete=0x7f040003;
         public static final int menu_insert=0x7f040002;
         public static final int no_pills=0x7f040001;
-        public static final int pill=0x7f040007;
-        public static final int user=0x7f040006;
+        public static final int no_time=0x7f040007;
+        public static final int pill=0x7f040009;
+        public static final int user=0x7f040008;
     }
 }
