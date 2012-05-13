@@ -75,7 +75,7 @@ public class PillsDbAdapter {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS pills");
+            db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE);
             onCreate(db);
         }
     }
