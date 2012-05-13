@@ -45,16 +45,17 @@ public class PillsDbAdapter {
     private DatabaseHelper mDbHelper;
     private SQLiteDatabase mDb;
 
+    
+
+    private static final String DATABASE_NAME = "data";
+    private static final String DATABASE_TABLE = "pills";
+    private static final int DATABASE_VERSION = 2;    
     /**
      * Database creation sql statement
      */
     private static final String DATABASE_CREATE =
-        "create table pills (_id integer primary key autoincrement, "
-        + "user text not null, pill text not null, hour text not null);";
-
-    private static final String DATABASE_NAME = "data";
-    private static final String DATABASE_TABLE = "pills";
-    private static final int DATABASE_VERSION = 2;
+        "create table "+DATABASE_TABLE+" ("+KEY_ROWID+" integer primary key autoincrement, "
+        + KEY_USER+" text not null, "+KEY_PILL+" text not null, "+KEY_HOUR+" text not null);";
 
     private final Context mCtx;
 
