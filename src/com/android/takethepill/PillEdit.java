@@ -16,6 +16,8 @@
 
 package com.android.takethepill;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -39,7 +41,8 @@ public class PillEdit extends Activity {
 
 	private String mTimeString;
 	private TextView mTimeText;
-
+	private ArrayList<String> hours = new ArrayList();
+	
 	private int mHour;
 	private int mMinute;
 	static final int TIME_DIALOG_ID = 0;
@@ -61,6 +64,8 @@ public class PillEdit extends Activity {
 		Button confirmButton = (Button) findViewById(R.id.confirm);
 
 		Button addTimeButton = (Button) findViewById(R.id.addtime);
+		
+		
 
 		mRowId = (savedInstanceState == null) ? null :
 			(Long) savedInstanceState.getSerializable(PillsDbAdapter.KEY_ROWID);
@@ -69,7 +74,8 @@ public class PillEdit extends Activity {
 			mRowId = extras != null ? extras.getLong(PillsDbAdapter.KEY_ROWID)
 					: null;
 		}
-
+		
+		
 		populateFields();
 
 		confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -92,25 +98,33 @@ public class PillEdit extends Activity {
 		final Calendar c = Calendar.getInstance();        
 		mHour = c.get(Calendar.HOUR_OF_DAY);
 		mMinute = c.get(Calendar.MINUTE);
-		//updateTime(mHour, mMinute);
 
 	}
 
+	private String hourArrayString(){
+		String hourString="";
+		for (int i=0; i<hours.size(); i++){
+			hourString=hourString + hours.get(i);
+			if (i<(hours.size()-1)) hourString=hourString+ " - ";
+		}
+		return hourString;
+	}
+	
+	private void hourStringArray(String hourString){
+		hours=new ArrayList(Arrays.asList(hourString.split(" - ")));
+	}
+	
+	
 	private void updateTime(int hourOfDay, int minute) {
 
-		if(mTimeString==null){
-			mTimeString= new StringBuilder()
-			.append(pad(hourOfDay)).append(":")
-			.append(pad(minute)).toString();
-		} else {
-			StringBuilder vieja = new StringBuilder(mTimeString).append(" - ");
-			StringBuilder nueva = vieja
-					.append(pad(hourOfDay)).append(":")
-					.append(pad(minute));
-
-			mTimeString = nueva.toString();
-		}
+		hours.add(new StringBuilder()
+		.append(pad(hourOfDay)).append(":")
+		.append(pad(minute)).toString());
+		
+		mTimeText.setText(hourArrayString());
 	}
+	
+	
 
 	private static String pad(int c) {
 		if (c >= 10)
@@ -128,11 +142,9 @@ public class PillEdit extends Activity {
 					pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_USER)));
 			mPillText.setText(pillcursor.getString(
 					pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_PILL)));
-
-			
-		}
-		if(mTimeString!=null){
-			mTimeText.setText(mTimeString);
+			hourStringArray(pillcursor.getString(
+					pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_HOUR)));
+			mTimeText.setText(hourArrayString());
 		}
 	}
 
@@ -158,7 +170,7 @@ public class PillEdit extends Activity {
 	private void saveState() {
 		String user = mUserText.getText().toString();
 		String pill = mPillText.getText().toString();
-		String hour = mTimeString;
+		String hour = mTimeText.getText().toString();
 
 		if (mRowId == null) {
 			long id = mDbHelper.createPill(user, pill, hour);
@@ -194,7 +206,6 @@ public class PillEdit extends Activity {
 			mHour = hourOfDay;
 			mMinute = minute;
 			updateTime(mHour, mMinute);
-			populateFields();
 		}
 	};
 
