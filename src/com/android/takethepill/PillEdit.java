@@ -22,14 +22,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 public class PillEdit extends Activity {
 
 	private EditText mUserText;
 	private EditText mPillText;
-	//private EditText mHourText;
 	private Long mRowId;
 	private PillsDbAdapter mDbHelper;
 	private TimePicker timePicker;
@@ -46,9 +44,7 @@ public class PillEdit extends Activity {
 
 		mUserText = (EditText) findViewById(R.id.user);
 		mPillText = (EditText) findViewById(R.id.pill);
-
 		timePicker = (TimePicker) findViewById(R.id.timepicker);
-
 		Button confirmButton = (Button) findViewById(R.id.confirm);
 
 		mRowId = (savedInstanceState == null) ? null :
@@ -99,13 +95,13 @@ public class PillEdit extends Activity {
 	private void populateFields() {
 		
 		if (mRowId != null) {
-			Cursor note = mDbHelper.fetchPill(mRowId);
-			startManagingCursor(note);
-			mUserText.setText(note.getString(
-					note.getColumnIndexOrThrow(PillsDbAdapter.KEY_USER)));
-			mPillText.setText(note.getString(
-					note.getColumnIndexOrThrow(PillsDbAdapter.KEY_PILL)));
-			String tiempo = note.getString(note.getColumnIndexOrThrow(PillsDbAdapter.KEY_HOUR));
+			Cursor pillcursor = mDbHelper.fetchPill(mRowId);
+			startManagingCursor(pillcursor);
+			mUserText.setText(pillcursor.getString(
+					pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_USER)));
+			mPillText.setText(pillcursor.getString(
+					pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_PILL)));
+			String tiempo = pillcursor.getString(pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_HOUR));
 			String [] t= tiempo.split(":");
 			int hora= Integer.parseInt(t[0]);
 			int min= Integer.parseInt(t[1]);
