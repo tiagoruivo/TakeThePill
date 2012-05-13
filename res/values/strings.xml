@@ -9,10 +9,12 @@
     <string name="confirm">Confirm</string>
     <string name="add_time">Add Time</string>
     <string name="no_time">No time yet</string>
-    
+    <string name="alert_dialog_multi_choice">Select a day</string>
+    <string name="alert_dialog_ok">OK</string>
+    <string name="alert_dialog_cancel">Cancel</string>
+    <string name="add_days">Add Days</string>
     <string name="user">User</string>
     <string name="pill">Pill</string>
     <string name="hour">Hour</string>
-    
-    
+
 </resources>

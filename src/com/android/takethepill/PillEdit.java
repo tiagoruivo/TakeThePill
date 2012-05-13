@@ -21,11 +21,14 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -45,7 +48,8 @@ public class PillEdit extends Activity {
 	
 	private int mHour;
 	private int mMinute;
-	static final int TIME_DIALOG_ID = 0;
+	private static final int TIME_DIALOG_ID = 0;
+	private static final int DIALOG_MULTIPLE_CHOICE = 1;
 
 
 	@Override
@@ -98,6 +102,14 @@ public class PillEdit extends Activity {
 		final Calendar c = Calendar.getInstance();        
 		mHour = c.get(Calendar.HOUR_OF_DAY);
 		mMinute = c.get(Calendar.MINUTE);
+		
+		/* Display a list of checkboxes */
+        Button checkBox = (Button) findViewById(R.id.add_days);
+        checkBox.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                showDialog(DIALOG_MULTIPLE_CHOICE);
+            }
+        });
 
 	}
 
@@ -124,8 +136,6 @@ public class PillEdit extends Activity {
 		mTimeText.setText(hourArrayString());
 	}
 	
-	
-
 	private static String pad(int c) {
 		if (c >= 10)
 			return String.valueOf(c);
@@ -187,7 +197,35 @@ public class PillEdit extends Activity {
 		switch (id) {
 		case TIME_DIALOG_ID:
 			return new TimePickerDialog(this,
-					mTimeSetListener, mHour, mMinute, true);            
+					mTimeSetListener, mHour, mMinute, true);
+		case DIALOG_MULTIPLE_CHOICE:
+            return new AlertDialog.Builder(this)
+                .setIcon(R.drawable.ic_popup_reminder)
+                .setTitle(R.string.alert_dialog_multi_choice)
+                .setMultiChoiceItems(R.array.select_dialog_day,
+                        new boolean[]{false, true, false, true, false, false, false},
+                        new DialogInterface.OnMultiChoiceClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton,
+                                    boolean isChecked) {
+
+                                /* User clicked on a check box do some stuff */
+                            }
+                        })
+                .setPositiveButton(R.string.alert_dialog_ok,
+                        new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        /* User clicked Yes so do some stuff */
+                    }
+                })
+                .setNegativeButton(R.string.alert_dialog_cancel,
+                        new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        /* User clicked No so do some stuff */
+                    }
+                })
+               .create();
 		}
 		return null;
 	}
