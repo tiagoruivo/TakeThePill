@@ -8,6 +8,7 @@
     <string name="edit_pill">Edit Pill</string>
     <string name="confirm">Confirm</string>
     <string name="add_time">Add Time</string>
+    <string name="remove_time">Remove</string>
     <string name="no_time">No time yet</string>
     <string name="no_days">No days yet</string>
     <string name="alert_dialog_multi_choice">Select a day</string>

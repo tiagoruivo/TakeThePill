@@ -25,16 +25,19 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.AdapterView; 
 
 public class PillEdit extends Activity {
 
@@ -51,6 +54,8 @@ public class PillEdit extends Activity {
 	private int mMinute;
 	private static final int TIME_DIALOG_ID = 0;
 	private static final int DIALOG_MULTIPLE_CHOICE = 1;
+	private static final int CHANGE_TIME_DIALOG_ID = 2;
+	
 
 
 	@Override
@@ -94,16 +99,32 @@ public class PillEdit extends Activity {
 		});
 
 		addTimeButton.setOnClickListener(new View.OnClickListener() {
-
+			
+			final Calendar c = Calendar.getInstance();
+			
 			public void onClick(View view) {
 				//codigo para cuando se pulsa el boton: lanzar time spiner
+				mHour = c.get(Calendar.HOUR_OF_DAY);
+				mMinute = c.get(Calendar.MINUTE);
 				showDialog(TIME_DIALOG_ID);
 			}
 
-		});		
-		final Calendar c = Calendar.getInstance();        
-		mHour = c.get(Calendar.HOUR_OF_DAY);
-		mMinute = c.get(Calendar.MINUTE);
+		});        
+		
+		
+		
+		mTimeList.setOnItemClickListener(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				String [] h= hours.get((int) arg3).split(":");
+				mHour= Integer.parseInt(h[0]);
+				mMinute= Integer.parseInt(h[1]);
+				showDialog(CHANGE_TIME_DIALOG_ID);
+				
+			}
+			});
 		
 		/* Display a list of checkboxes */
         checkBox.setOnClickListener(new OnClickListener() {
@@ -113,6 +134,7 @@ public class PillEdit extends Activity {
         });
 
 	}
+	
 
 	private String hourArrayString(){
 		String hourString="";
@@ -221,7 +243,7 @@ public class PillEdit extends Activity {
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
-		case TIME_DIALOG_ID:
+		case TIME_DIALOG_ID: case CHANGE_TIME_DIALOG_ID:
 			return new TimePickerDialog(this,
 					mTimeSetListener, mHour, mMinute, true);
 		case DIALOG_MULTIPLE_CHOICE:
@@ -252,7 +274,7 @@ public class PillEdit extends Activity {
 	@Override
 	protected void onPrepareDialog(int id, Dialog dialog) {
 		switch (id) {
-		case TIME_DIALOG_ID:
+		case TIME_DIALOG_ID: case CHANGE_TIME_DIALOG_ID:
 			((TimePickerDialog) dialog).updateTime(mHour, mMinute);
 			break;            
 		}
