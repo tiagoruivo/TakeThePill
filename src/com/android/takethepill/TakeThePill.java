@@ -54,10 +54,10 @@ public class TakeThePill extends ListActivity {
         startManagingCursor(pillsCursor);
 
         // Create an array to specify the fields we want to display in the list (only TITLE)
-        String[] from = new String[]{PillsDbAdapter.KEY_USER, PillsDbAdapter.KEY_PILL, PillsDbAdapter.KEY_HOUR};
+        String[] from = new String[]{PillsDbAdapter.KEY_USER, PillsDbAdapter.KEY_PILL, PillsDbAdapter.KEY_DAYS, PillsDbAdapter.KEY_HOUR};
 
         // and an array of the fields we want to bind those fields to (in this case just text1)
-        int[] to = new int[]{R.id.user, R.id.pill, R.id.hour};
+        int[] to = new int[]{R.id.user, R.id.pill, R.id.days, R.id.hour};
 
         // Now create a simple cursor adapter and set it to display
         SimpleCursorAdapter pills = 

@@ -29,8 +29,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -40,11 +42,10 @@ public class PillEdit extends Activity {
 	private EditText mPillText;
 	private Long mRowId;
 	private PillsDbAdapter mDbHelper;
-	//private TimePicker timePicker;
-
-	private String mTimeString;
-	private TextView mTimeText;
+	private TextView mDaysText;
 	private ArrayList<String> hours = new ArrayList();
+	private boolean [] arrayDays= new boolean[7];
+	private ListView mTimeList;
 	
 	private int mHour;
 	private int mMinute;
@@ -63,10 +64,11 @@ public class PillEdit extends Activity {
 
 		mUserText = (EditText) findViewById(R.id.user);
 		mPillText = (EditText) findViewById(R.id.pill);
-
-		mTimeText = (TextView) findViewById(R.id.textHour);
+		mDaysText = (TextView) findViewById(R.id.textDays);
+		mTimeList = (ListView) findViewById(R.id.hourList);
+		
 		Button confirmButton = (Button) findViewById(R.id.confirm);
-
+		Button checkBox = (Button) findViewById(R.id.add_days);
 		Button addTimeButton = (Button) findViewById(R.id.addtime);
 		
 		
@@ -104,7 +106,6 @@ public class PillEdit extends Activity {
 		mMinute = c.get(Calendar.MINUTE);
 		
 		/* Display a list of checkboxes */
-        Button checkBox = (Button) findViewById(R.id.add_days);
         checkBox.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 showDialog(DIALOG_MULTIPLE_CHOICE);
@@ -126,14 +127,35 @@ public class PillEdit extends Activity {
 		hours=new ArrayList(Arrays.asList(hourString.split(" - ")));
 	}
 	
+	private void daysStringArray(String daysString){
+		for (int i=0; i<arrayDays.length; i++){
+			arrayDays[i]= (daysString.indexOf(getResources().getStringArray(R.array.select_dialog_day)[i])) !=-1;
+		}
+	}
+	
+	private void updateDays() {
+		String stringDays="";
+		for (int i=0; i<arrayDays.length; i++){
+		if(arrayDays[i]){
+			if (stringDays != "")
+				stringDays= stringDays + " - ";
+			stringDays= stringDays + getResources().getStringArray(R.array.select_dialog_day)[i];
+			}
+		}
+		mDaysText.setText(stringDays);
+	}
+	
+	private void updateList(){
+		mTimeList.setAdapter(new ArrayAdapter<String>(this,
+			      android.R.layout.simple_list_item_1, hours));
+	}
 	
 	private void updateTime(int hourOfDay, int minute) {
 
 		hours.add(new StringBuilder()
 		.append(pad(hourOfDay)).append(":")
 		.append(pad(minute)).toString());
-		
-		mTimeText.setText(hourArrayString());
+		updateList();
 	}
 	
 	private static String pad(int c) {
@@ -152,9 +174,12 @@ public class PillEdit extends Activity {
 					pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_USER)));
 			mPillText.setText(pillcursor.getString(
 					pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_PILL)));
+			mDaysText.setText(pillcursor.getString(
+					pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_DAYS)));
+			daysStringArray(mDaysText.getText().toString());
 			hourStringArray(pillcursor.getString(
 					pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_HOUR)));
-			mTimeText.setText(hourArrayString());
+			updateList();
 		}
 	}
 
@@ -180,15 +205,16 @@ public class PillEdit extends Activity {
 	private void saveState() {
 		String user = mUserText.getText().toString();
 		String pill = mPillText.getText().toString();
-		String hour = mTimeText.getText().toString();
+		String days = mDaysText.getText().toString();
+		String hour = hourArrayString();
 
 		if (mRowId == null) {
-			long id = mDbHelper.createPill(user, pill, hour);
+			long id = mDbHelper.createPill(user, pill, days, hour);
 			if (id > 0) {
 				mRowId = id;
 			}
 		} else {
-			mDbHelper.updatePill(mRowId, user, pill, hour);
+			mDbHelper.updatePill(mRowId, user, pill, days, hour);
 		}
 	}
 
@@ -202,27 +228,21 @@ public class PillEdit extends Activity {
             return new AlertDialog.Builder(this)
                 .setIcon(R.drawable.ic_popup_reminder)
                 .setTitle(R.string.alert_dialog_multi_choice)
-                .setMultiChoiceItems(R.array.select_dialog_day,
-                        new boolean[]{false, true, false, true, false, false, false},
+                .setMultiChoiceItems(R.array.select_dialog_day,arrayDays,
                         new DialogInterface.OnMultiChoiceClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton,
                                     boolean isChecked) {
-
-                                /* User clicked on a check box do some stuff */
+                            	if(arrayDays[whichButton])
+                            		arrayDays[whichButton] = true;
+                            	else
+                            		arrayDays[whichButton] = false;
                             }
                         })
                 .setPositiveButton(R.string.alert_dialog_ok,
                         new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
 
-                        /* User clicked Yes so do some stuff */
-                    }
-                })
-                .setNegativeButton(R.string.alert_dialog_cancel,
-                        new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-                        /* User clicked No so do some stuff */
+                        updateDays(); 
                     }
                 })
                .create();

@@ -38,6 +38,7 @@ public class PillsDbAdapter {
 
     public static final String KEY_USER = "user";
     public static final String KEY_PILL = "pill";
+    public static final String KEY_DAYS = "days";
     public static final String KEY_HOUR = "hour";
     public static final String KEY_ROWID = "_id";
 
@@ -55,7 +56,7 @@ public class PillsDbAdapter {
      */
     private static final String DATABASE_CREATE =
         "create table "+DATABASE_TABLE+" ("+KEY_ROWID+" integer primary key autoincrement, "
-        + KEY_USER+" text not null, "+KEY_PILL+" text not null, "+KEY_HOUR+" text not null);";
+        + KEY_USER+" text not null, "+KEY_PILL+" text not null, "+KEY_DAYS+" text not null, "+KEY_HOUR+" text not null);";
 
     private final Context mCtx;
 
@@ -119,10 +120,11 @@ public class PillsDbAdapter {
      * @param body the body of the note
      * @return rowId or -1 if failed
      */
-    public long createPill(String user, String pill, String hour) {
+    public long createPill(String user, String pill, String days, String hour) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_USER, user);
         initialValues.put(KEY_PILL, pill);
+        initialValues.put(KEY_DAYS, days);
         initialValues.put(KEY_HOUR, hour);
         
         return mDb.insert(DATABASE_TABLE, null, initialValues);
@@ -147,7 +149,7 @@ public class PillsDbAdapter {
     public Cursor fetchAllPills() {
 
         return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_USER,
-                KEY_PILL, KEY_HOUR}, null, null, null, null, null);
+                KEY_PILL, KEY_DAYS, KEY_HOUR}, null, null, null, null, null);
     }
 
     /**
@@ -162,7 +164,7 @@ public class PillsDbAdapter {
         Cursor mCursor =
 
             mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
-                    KEY_USER, KEY_PILL, KEY_HOUR}, KEY_ROWID + "=" + rowId, null,
+                    KEY_USER, KEY_PILL, KEY_DAYS, KEY_HOUR}, KEY_ROWID + "=" + rowId, null,
                     null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -181,10 +183,11 @@ public class PillsDbAdapter {
      * @param body value to set note body to
      * @return true if the note was successfully updated, false otherwise
      */
-    public boolean updatePill(long rowId, String user, String pill, String hour) {
+    public boolean updatePill(long rowId, String user, String pill, String days, String hour) {
         ContentValues args = new ContentValues();
         args.put(KEY_USER, user);
         args.put(KEY_PILL, pill);
+        args.put(KEY_DAYS, days);
         args.put(KEY_HOUR, hour);
 
         return mDb.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
