@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 public class PillEdit extends Activity {
 
@@ -86,8 +87,22 @@ public class PillEdit extends Activity {
 		confirmButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-				setResult(RESULT_OK);
-				finish();
+				if(mUserText.getText().length()==0){
+					Toast toast1 = Toast.makeText(getApplicationContext(),R.string.error_user, Toast.LENGTH_SHORT);
+					toast1.show();
+				}else if(mPillText.getText().length()==0){
+					Toast toast1 = Toast.makeText(getApplicationContext(),R.string.error_pill, Toast.LENGTH_SHORT);
+					toast1.show();
+				}else if(mDaysText.getText().toString().equals(getResources().getString(R.string.no_days))){
+					Toast toast1 = Toast.makeText(getApplicationContext(),R.string.error_day, Toast.LENGTH_SHORT);
+					toast1.show();
+				}else if(mArrayHours.isEmpty()){
+					Toast toast1 = Toast.makeText(getApplicationContext(),R.string.error_hour, Toast.LENGTH_SHORT);
+					toast1.show();
+				} else {
+					setResult(RESULT_OK);
+					finish();
+				}
 			}
 
 		});
@@ -181,7 +196,8 @@ public class PillEdit extends Activity {
 				stringDays= stringDays + getResources().getStringArray(R.array.select_dialog_day)[i];
 			}
 		}
-		mDaysText.setText(stringDays);
+		if (stringDays=="") mDaysText.setText(R.string.no_days);
+		else mDaysText.setText(stringDays);
 	}
 
 	/**
@@ -289,25 +305,19 @@ public class PillEdit extends Activity {
 			.setTitle(R.string.alert_dialog_multi_choice)
 			.setMultiChoiceItems(R.array.select_dialog_day,mArrayDays,
 					new DialogInterface.OnMultiChoiceClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton, boolean isChecked) {
-//					if(mArrayDays[whichButton])	mArrayDays[whichButton] = true;
-//					else
-//						mArrayDays[whichButton] = false;
-					//esto no hace nada???
-				}//************************************************************************************************
-			})
-			.setPositiveButton(R.string.alert_dialog_ok,
-					new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {
+				public void onClick(DialogInterface dialog, int whichButton, boolean isChecked) {}})
+				.setPositiveButton(R.string.alert_dialog_ok,
+						new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
 
-					updateDays(); 
-				}
-			})
-			.create();
+						updateDays(); 
+					}
+				})
+				.create();
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Se le llama antes de crear un dialogo
 	 */
@@ -319,7 +329,7 @@ public class PillEdit extends Activity {
 			break;            
 		}
 	}  
-	
+
 	//Listener del TimePiker (atributo!!)
 	private TimePickerDialog.OnTimeSetListener mTimeSetListener =
 			new TimePickerDialog.OnTimeSetListener() {

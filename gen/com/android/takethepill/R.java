@@ -43,6 +43,10 @@ public final class R {
         public static final int app_name=0x7f050000;
         public static final int confirm=0x7f050005;
         public static final int edit_pill=0x7f050004;
+        public static final int error_day=0x7f050012;
+        public static final int error_hour=0x7f050011;
+        public static final int error_pill=0x7f050014;
+        public static final int error_user=0x7f050013;
         public static final int hour=0x7f050010;
         public static final int menu_delete=0x7f050003;
         public static final int menu_insert=0x7f050002;

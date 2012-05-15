@@ -18,5 +18,9 @@
     <string name="user">User</string>
     <string name="pill">Pill</string>
     <string name="hour">Hour</string>
+    <string name="error_hour">Please select at least one hour</string>
+    <string name="error_day">Please select at least one day</string>
+    <string name="error_user">Please type the user name</string>
+    <string name="error_pill">Please type a pill name</string>
 
 </resources>
