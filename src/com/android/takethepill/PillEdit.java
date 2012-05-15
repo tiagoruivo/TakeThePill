@@ -3,12 +3,14 @@ package com.android.takethepill;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -100,6 +102,7 @@ public class PillEdit extends Activity {
 					Toast toast1 = Toast.makeText(getApplicationContext(),R.string.error_hour, Toast.LENGTH_SHORT);
 					toast1.show();
 				} else {
+					updateAlarms();
 					setResult(RESULT_OK);
 					finish();
 				}
@@ -151,6 +154,50 @@ public class PillEdit extends Activity {
 				adb.show();
 			}
 		});		
+	}
+	
+	
+	/**
+	 * Actualiza las alarmas tras confirmar los cambios.
+	 */
+	private void updateAlarms(){
+	Intent intent = new Intent(PillEdit.this, RepeatingAlarm.class);
+    PendingIntent sender = PendingIntent.getBroadcast(PillEdit.this,
+            0, intent, 0);
+    
+    // And cancel the alarm.
+    AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
+    am.cancel(sender);
+    
+ // We want the alarm to go off 30 seconds from now.
+    
+    Calendar calendar = Calendar.getInstance();
+    Calendar currentDay;
+    int day=calendar.get(Calendar.DAY_OF_WEEK);
+    for (int i=0; i<mArrayDays.length;i++){
+    	if ((day-1+i)==mArrayDays.length) day=day-7;
+    	if(mArrayDays[day-1+i]){
+    		String h;
+    	    int hourOfDay;
+    	    int min;
+    	    
+    		for (int j=0; j<mArrayDays.length; i++){
+    			h=mArrayHours.get(j);
+    			hourOfDay= Integer.parseInt(h.split(":")[0]);
+    			min= Integer.parseInt(h.split(":")[1]);
+    			currentDay=Calendar.getInstance();
+    			currentDay.set(Calendar.HOUR_OF_DAY, hourOfDay);
+    			currentDay.set(Calendar.MINUTE, min);
+    			if (i==0 || currentDay.get(Calendar.HOUR_OF_DAY) <= Calendar.getInstance().get(Calendar.HOUR_OF_DAY) || currentDay.get(Calendar.MINUTE) <= Calendar.getInstance().get(Calendar.MINUTE))
+    				currentDay.add(Calendar.DAY_OF_YEAR, i+7);
+    			else
+    				currentDay.add(Calendar.DAY_OF_YEAR, i);
+    			long firstTime= currentDay.getTimeInMillis();
+    			am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        firstTime, 7*24*3600*1000, sender);
+    		}
+    	}
+    }
 	}
 
 	/**
@@ -279,7 +326,7 @@ public class PillEdit extends Activity {
 		String pill = mPillText.getText().toString();
 		String days = mDaysText.getText().toString();
 		String hour = hourArrayToString();
-
+//TODO Hay que a–adir que no cree DB si hay nulo y sacarlo de confirm.
 		if (mRowId == null) {
 			long id = mDbHelper.createPill(user, pill, days, hour);
 			if (id > 0) {
