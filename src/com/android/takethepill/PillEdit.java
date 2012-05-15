@@ -25,11 +25,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -37,7 +37,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.AdapterView; 
 
 public class PillEdit extends Activity {
 
@@ -54,7 +53,6 @@ public class PillEdit extends Activity {
 	private int mMinute;
 	private static final int TIME_DIALOG_ID = 0;
 	private static final int DIALOG_MULTIPLE_CHOICE = 1;
-	private static final int CHANGE_TIME_DIALOG_ID = 2;
 	
 
 
@@ -118,13 +116,21 @@ public class PillEdit extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				String [] h= hours.get((int) arg3).split(":");
-				mHour= Integer.parseInt(h[0]);
-				mMinute= Integer.parseInt(h[1]);
-				showDialog(CHANGE_TIME_DIALOG_ID);
-				
-			}
+				 AlertDialog.Builder adb=new AlertDialog.Builder(PillEdit.this);
+			        adb.setTitle("Delete?");
+			        adb.setMessage("Are you sure you want to delete " + hours.get(arg2) + "from the Database");
+			        final int positionToRemove = arg2;
+			        adb.setNegativeButton("Cancel", null);
+			        adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+			            public void onClick(DialogInterface dialog, int which) {
+			                hours.remove(positionToRemove);
+			                updateList();
+			            }});
+			        adb.show();
+			        }
 			});
+		
+
 		
 		/* Display a list of checkboxes */
         checkBox.setOnClickListener(new OnClickListener() {
@@ -243,7 +249,7 @@ public class PillEdit extends Activity {
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
-		case TIME_DIALOG_ID: case CHANGE_TIME_DIALOG_ID:
+		case TIME_DIALOG_ID:
 			return new TimePickerDialog(this,
 					mTimeSetListener, mHour, mMinute, true);
 		case DIALOG_MULTIPLE_CHOICE:
@@ -274,7 +280,7 @@ public class PillEdit extends Activity {
 	@Override
 	protected void onPrepareDialog(int id, Dialog dialog) {
 		switch (id) {
-		case TIME_DIALOG_ID: case CHANGE_TIME_DIALOG_ID:
+		case TIME_DIALOG_ID:
 			((TimePickerDialog) dialog).updateTime(mHour, mMinute);
 			break;            
 		}
@@ -288,5 +294,4 @@ public class PillEdit extends Activity {
 			updateTime(mHour, mMinute);
 		}
 	};
-
 }
