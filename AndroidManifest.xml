@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".PillEdit" />
+        <activity android:name=".RepeatingAlarm" />
     </application>
 
 </manifest>
