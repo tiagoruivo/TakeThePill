@@ -2,9 +2,11 @@
 <resources>
 
     <string name="app_name">TakeThePill</string>
-    <string name="no_pills">No medicines yet</string>
+    <string name="no_pills">No medicines yet, press menu button.</string>
     <string name="menu_insert">Add Pill</string>
     <string name="menu_prefs">Change Preferences</string>
+    <string name="menu_help">Help</string>
+    <string name="menu_about">About TakeThePill...</string>
     <string name="changed_prefs">Preferences were changed</string>
     <string name="menu_delete">Delete Pill</string>
     <string name="edit_pill">Edit Pill</string>

@@ -23,6 +23,8 @@ public class TakeThePill extends ListActivity {
 	private static final int INSERT_ID = Menu.FIRST;
 	private static final int DELETE_ID = Menu.FIRST + 1;
 	private static final int PREFS_ID = Menu.FIRST + 2;
+	private static final int HELP_ID = Menu.FIRST + 3;
+	private static final int ABOUT_ID = Menu.FIRST + 4;
 
 	private PillsDbAdapter mDbHelper;
 
@@ -76,6 +78,8 @@ public class TakeThePill extends ListActivity {
 		super.onCreateOptionsMenu(menu);
 		menu.add(0, INSERT_ID, 0, R.string.menu_insert);
 		menu.add(0, PREFS_ID, 1, R.string.menu_prefs);
+		menu.add(0, HELP_ID, 2, R.string.menu_help);
+		menu.add(0, ABOUT_ID, 3, R.string.menu_about);
 		return true;
 	}
 
@@ -92,8 +96,14 @@ public class TakeThePill extends ListActivity {
 			//TODO Activity para cambiar las preferencias
 			setPrefs("mr.pujo@gmail.com","650928719");
 			return true;
-		}
 
+		case HELP_ID:
+			//TODO
+			return true;
+		case ABOUT_ID:
+			//TODO 
+			return true;
+		}
 		return super.onMenuItemSelected(featureId, item);
 	}
 
@@ -163,12 +173,12 @@ public class TakeThePill extends ListActivity {
 
 		editor.putString(EMAIL_KEY, email);
 		editor.putString(PHONE_KEY, phone);
-		
+
 		editor.commit();
-		
+
 		Toast toast = Toast.makeText(getApplicationContext(),R.string.changed_prefs, Toast.LENGTH_SHORT);
 		toast.show();
-		
+
 	}
 }
 
