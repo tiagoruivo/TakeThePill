@@ -3,13 +3,19 @@
 
     <string name="app_name">TakeThePill</string>
     <string name="no_pills">No medicines yet, press menu button.</string>
+    <string name="about">This is an aplication for remind you to take your pills.</string>
+    <string name="about_title">About TakeThePill</string>
+    <string name="help">Press menu button to add pills. Press over a pill to edit or delete..</string>
+    <string name="help_title">Help</string>
+    <!-- Menus -->
     <string name="menu_insert">Add Pill</string>
     <string name="menu_prefs">Change Preferences</string>
     <string name="menu_help">Help</string>
     <string name="menu_about">About TakeThePill...</string>
-    <string name="changed_prefs">Preferences were changed</string>
     <string name="menu_delete">Delete Pill</string>
+    <string name="menu_edit">Edit Pill</string>
     <string name="edit_pill">Edit Pill</string>
+    <string name="changed_prefs">Preferences were changed</string>
     <string name="confirm">Confirm</string>
     <string name="add_time">Add Time</string>
     <string name="remove_time">Remove</string>

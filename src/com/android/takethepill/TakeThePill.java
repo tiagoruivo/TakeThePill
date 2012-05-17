@@ -1,6 +1,8 @@
 package com.android.takethepill;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -19,12 +22,6 @@ public class TakeThePill extends ListActivity {
 
 	private static final int ACTIVITY_CREATE=0;
 	private static final int ACTIVITY_EDIT=1;
-
-	private static final int INSERT_ID = Menu.FIRST;
-	private static final int DELETE_ID = Menu.FIRST + 1;
-	private static final int PREFS_ID = Menu.FIRST + 2;
-	private static final int HELP_ID = Menu.FIRST + 3;
-	private static final int ABOUT_ID = Menu.FIRST + 4;
 
 	private PillsDbAdapter mDbHelper;
 
@@ -75,36 +72,36 @@ public class TakeThePill extends ListActivity {
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		menu.add(0, INSERT_ID, 0, R.string.menu_insert);
-		menu.add(0, PREFS_ID, 1, R.string.menu_prefs);
-		menu.add(0, HELP_ID, 2, R.string.menu_help);
-		menu.add(0, ABOUT_ID, 3, R.string.menu_about);
-		return true;
+		MenuInflater inflater = getMenuInflater(); 
+		inflater.inflate(R.menu.main_menu, menu); 
+		return true; 
 	}
 
 	/**
 	 * Metodo que maneja el evento de seleccion de menu
 	 */
 	@Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		switch(item.getItemId()) {
-		case INSERT_ID:
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle item selection 
+		switch (item.getItemId()){ 
+		case R.id.insert_id: 
 			createPill();
-			return true;
-		case PREFS_ID:
+			return true; 
+		case R.id.prefs_id: 
 			//TODO Activity para cambiar las preferencias
 			setPrefs("mr.pujo@gmail.com","650928719");
 			return true;
-
-		case HELP_ID:
-			//TODO
+		case R.id.help_id:
+			Intent i1 = new Intent(this, HelpActivity.class);
+			startActivity(i1);
 			return true;
-		case ABOUT_ID:
-			//TODO 
+		case R.id.about_id:
+			Intent i2 = new Intent(this, AboutActivity.class);
+			startActivity(i2);
 			return true;
-		}
-		return super.onMenuItemSelected(featureId, item);
+		default: 
+			return super.onOptionsItemSelected(item); 
+		} 
 	}
 
 	/**
@@ -113,7 +110,9 @@ public class TakeThePill extends ListActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		menu.add(0, DELETE_ID, 0, R.string.menu_delete);
+		//menu.add(0, DELETE_ID, 0, R.string.menu_delete);
+		MenuInflater inflater = getMenuInflater(); 
+		inflater.inflate(R.menu.context_menu, menu);
 	}
 
 	/**
@@ -121,13 +120,31 @@ public class TakeThePill extends ListActivity {
 	 */	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		final long id=info.id;
 		switch(item.getItemId()) {
-		case DELETE_ID:
-			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-			mDbHelper.deletePill(info.id);
-			fillData();
+		case R.id.delete_id:
+			
+			AlertDialog.Builder adb=new AlertDialog.Builder(TakeThePill.this);
+			adb.setTitle("Delete?");
+			adb.setMessage("Are you sure?");
+			adb.setNegativeButton("Cancel", null);
+			adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+
+				//Gestion del boton que confirma la eliminacion
+				public void onClick(DialogInterface dialog, int which) {
+					mDbHelper.deletePill(id);
+					fillData();
+				}});
+			adb.show();			
+			return true;
+		case R.id.edit_id:			
+			Intent i = new Intent(this, PillEdit.class);
+			i.putExtra(PillsDbAdapter.KEY_ROWID, id);
+			startActivityForResult(i, ACTIVITY_EDIT);			
 			return true;
 		}
+		
 		return super.onContextItemSelected(item);
 	}
 	/**
@@ -145,9 +162,8 @@ public class TakeThePill extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		Intent i = new Intent(this, PillEdit.class);
-		i.putExtra(PillsDbAdapter.KEY_ROWID, id);
-		startActivityForResult(i, ACTIVITY_EDIT);
+		//TODO
+		
 	}	
 
 	/**
