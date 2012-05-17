@@ -90,6 +90,7 @@ public class PillEdit extends Activity {
 		}
 		//Se rellenan los campos como corresponda	
 		populateFields();
+		cancelAlarms();
 
 		//Listener para el boton de confirmar
 		confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -163,16 +164,52 @@ public class PillEdit extends Activity {
 		});		
 	}
 
+	private void cancelAlarms(){
+		Calendar calendar = Calendar.getInstance();
+		Calendar currentDay;
+		int day=calendar.get(Calendar.DAY_OF_WEEK);
+		for (int i=0; i<mArrayDays.length;i++){
+			System.out.println("i="+i);
+			if ((day-1+i)==mArrayDays.length) day=day-7;
+			if(mArrayDays[day-1+i]){
+				String h;
+				int hourOfDay;
+				int min;
+
+				for (int j=0; j<mArrayHours.size(); j++){
+					System.out.println("j="+j);
+					h=mArrayHours.get(j);
+					hourOfDay= Integer.parseInt(h.split(":")[0]);
+					min= Integer.parseInt(h.split(":")[1]);
+					currentDay=Calendar.getInstance();
+					currentDay.set(Calendar.HOUR_OF_DAY, hourOfDay);
+					currentDay.set(Calendar.MINUTE, min);
+					currentDay.set(Calendar.SECOND, 0);
+					if (i==0 && currentDay.get(Calendar.HOUR_OF_DAY) < Calendar.getInstance().get(Calendar.HOUR_OF_DAY) || (currentDay.get(Calendar.MINUTE) <= Calendar.getInstance().get(Calendar.MINUTE) &&currentDay.get(Calendar.HOUR_OF_DAY) == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)))
+						currentDay.add(Calendar.DAY_OF_YEAR, i+7);
+					else
+						currentDay.add(Calendar.DAY_OF_YEAR, i);
+					long firstTime= currentDay.getTimeInMillis();
+					System.out.println(firstTime);
+					System.out.println(currentDay.get(Calendar.DATE)+ "-" + currentDay.get(Calendar.HOUR_OF_DAY) +":"+ currentDay.get(Calendar.MINUTE));
+					System.out.println(mRowId + " " + mRowId.intValue());
+					Intent intent = new Intent(this, RepeatingAlarm.class);
+					PendingIntent sender = PendingIntent.getBroadcast(this,
+							(int)firstTime, intent, 0);
+
+					AlarmManager am = (AlarmManager) PillEdit.this.getSystemService(Context.ALARM_SERVICE);
+					am.cancel(sender);
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Actualiza las alarmas tras confirmar los cambios.
 	 */
 	private void updateAlarms(){
 		
-		
-		
-		// And cancel the alarm.
-		//am.cancel(sender);
-
+		//cancelAlarms();
 		// We want the alarm to go off 30 seconds from now.
 
 		Calendar calendar = Calendar.getInstance();
@@ -194,18 +231,19 @@ public class PillEdit extends Activity {
 					currentDay=Calendar.getInstance();
 					currentDay.set(Calendar.HOUR_OF_DAY, hourOfDay);
 					currentDay.set(Calendar.MINUTE, min);
-					if (i==0 && currentDay.get(Calendar.HOUR_OF_DAY) <= Calendar.getInstance().get(Calendar.HOUR_OF_DAY) && currentDay.get(Calendar.MINUTE) <= Calendar.getInstance().get(Calendar.MINUTE))
+					currentDay.set(Calendar.SECOND, 0);
+					if (i==0 && currentDay.get(Calendar.HOUR_OF_DAY) < Calendar.getInstance().get(Calendar.HOUR_OF_DAY) || (currentDay.get(Calendar.MINUTE) <= Calendar.getInstance().get(Calendar.MINUTE) &&currentDay.get(Calendar.HOUR_OF_DAY) == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)))
 						currentDay.add(Calendar.DAY_OF_YEAR, i+7);
 					else
 						currentDay.add(Calendar.DAY_OF_YEAR, i);
 					long firstTime= currentDay.getTimeInMillis();
 					System.out.println(firstTime);
 					System.out.println(currentDay.get(Calendar.DATE)+ "-" + currentDay.get(Calendar.HOUR_OF_DAY) +":"+ currentDay.get(Calendar.MINUTE));
-					
-					
-					Intent intent = new Intent(PillEdit.this, PillEdit.class);
-					PendingIntent sender = PendingIntent.getBroadcast(PillEdit.this,
-							(int)firstTime, intent, PendingIntent.FLAG_ONE_SHOT);
+					System.out.println(mRowId + " " + mRowId.intValue());
+					Intent intent = new Intent(this, RepeatingAlarm.class);
+					PendingIntent sender = PendingIntent.getBroadcast(this,
+							(int)firstTime, intent, 0);
+
 					AlarmManager am = (AlarmManager) PillEdit.this.getSystemService(Context.ALARM_SERVICE);
 					am.setRepeating(AlarmManager.RTC_WAKEUP, firstTime, 7*24*3600*1000, sender);
 				}
