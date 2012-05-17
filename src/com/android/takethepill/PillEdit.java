@@ -102,7 +102,7 @@ public class PillEdit extends Activity {
 					Toast toast1 = Toast.makeText(getApplicationContext(),R.string.error_hour, Toast.LENGTH_SHORT);
 					toast1.show();
 				} else {
-					//updateAlarms();
+					updateAlarms();
 					setResult(RESULT_OK);
 					finish();
 				}
@@ -167,7 +167,7 @@ public class PillEdit extends Activity {
 
 		// And cancel the alarm.
 		AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
-		am.cancel(sender);
+		//am.cancel(sender);
 
 		// We want the alarm to go off 30 seconds from now.
 
@@ -175,13 +175,15 @@ public class PillEdit extends Activity {
 		Calendar currentDay;
 		int day=calendar.get(Calendar.DAY_OF_WEEK);
 		for (int i=0; i<mArrayDays.length;i++){
+			System.out.println("i="+i);
 			if ((day-1+i)==mArrayDays.length) day=day-7;
 			if(mArrayDays[day-1+i]){
 				String h;
 				int hourOfDay;
 				int min;
 
-				for (int j=0; j<mArrayDays.length; i++){
+				for (int j=0; j<mArrayHours.size(); j++){
+					System.out.println("j="+j);
 					h=mArrayHours.get(j);
 					hourOfDay= Integer.parseInt(h.split(":")[0]);
 					min= Integer.parseInt(h.split(":")[1]);
