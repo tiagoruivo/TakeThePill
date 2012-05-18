@@ -1,55 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:stretchColumns="1" >
+    android:layout_height="wrap_content" >
 
-    <TableRow>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dip" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="3dip"
             android:text="@string/user" />
 
         <TextView
             android:id="@+id/text_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="center"
+            android:padding="5dip"
             android:textAppearance="?android:attr/textAppearanceLarge" />
-    </TableRow>
-
-    <TableRow>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="3dip"
             android:text="@string/pill" />
 
         <TextView
             android:id="@+id/text_pill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="center"
+            android:padding="5dip"
             android:textAppearance="?android:attr/textAppearanceLarge" />
-    </TableRow>
 
-    <TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dip"
+            android:text="@string/days" />
 
         <TextView
             android:id="@+id/view_textDays"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no_days" />
-    </TableRow>
+            android:gravity="center"
+            android:padding="5dip"
+            android:text="@string/no_days"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    
-
-        <ListView
-            android:id="@+id/view_hourList"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no_time" />
-  
+            android:padding="3dip"
+            android:text="@string/hours" />
 
-</TableLayout>
+        <TextView
+            android:id="@+id/view_textHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="5dip"
+            android:text="@string/no_hours"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
+
+</ScrollView>

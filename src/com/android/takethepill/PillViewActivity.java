@@ -1,13 +1,8 @@
 package com.android.takethepill;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class PillViewActivity extends Activity {
@@ -15,11 +10,12 @@ public class PillViewActivity extends Activity {
 	private TextView mUserText;
 	private TextView mPillText;
 	private TextView mDaysText;
-	private ListView mTimeList;
+	private TextView mTimeText;
+	//private ListView mTimeList;
 	private Long mRowId;
 	private PillsDbAdapter mDbHelper;
 	
-	private ArrayList<String> mArrayHours = new ArrayList<String>();
+	//private ArrayList<String> mArrayHours = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +31,8 @@ public class PillViewActivity extends Activity {
 		mPillText = (TextView) findViewById(R.id.text_pill);
 
 		mDaysText = (TextView) findViewById(R.id.view_textDays);
-		mTimeList = (ListView) findViewById(R.id.view_hourList);
+		//mTimeList = (ListView) findViewById(R.id.view_hourList);
+		mTimeText = (TextView) findViewById(R.id.view_textHours);
 
 		mRowId = (savedInstanceState == null) ? null :
 			(Long) savedInstanceState.getSerializable(PillsDbAdapter.KEY_ROWID);
@@ -65,22 +62,23 @@ public class PillViewActivity extends Activity {
 			//Fija los dias de la semana
 			mDaysText.setText(pillcursor.getString(pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_DAYS)));
 			//Fija las horas de la pill
-			hourStringToArray(pillcursor.getString(pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_HOUR)));
-			updateList();
+			mTimeText.setText(pillcursor.getString(pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_HOUR)));
+//			hourStringToArray(pillcursor.getString(pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_HOUR)));
+//			updateList();
 		}
 	}
 
-	/**
-	 * Pasa de String a ArrayList las horas y lo guarda en el capo correspondiente
-	 * @param hourString Horas a pasar al ArrayList
-	 */
-	private void hourStringToArray(String hourString){
-		mArrayHours=new ArrayList<String>(Arrays.asList(hourString.split(" - ")));
-	}
-	/**
-	 * Actualiza la lista de las horas	en su elemento visual.
-	 */
-	private void updateList(){
-		mTimeList.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, mArrayHours));
-	}
+//	/**
+//	 * Pasa de String a ArrayList las horas y lo guarda en el capo correspondiente
+//	 * @param hourString Horas a pasar al ArrayList
+//	 */
+//	private void hourStringToArray(String hourString){
+//		mArrayHours=new ArrayList<String>(Arrays.asList(hourString.split(" - ")));
+//	}
+//	/**
+//	 * Actualiza la lista de las horas	en su elemento visual.
+//	 */
+//	private void updateList(){
+//		mTimeList.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, mArrayHours));
+//	}
 }

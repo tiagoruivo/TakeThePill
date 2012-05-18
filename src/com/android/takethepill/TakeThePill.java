@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
 public class TakeThePill extends ListActivity {
 
@@ -177,7 +176,6 @@ public class TakeThePill extends ListActivity {
 
 
 	private void restorePrefs(){
-		// Restore preferences
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		mEmail= settings.getString(EMAIL_KEY, "empty");
 		mPhone= settings.getString(PHONE_KEY, "0");

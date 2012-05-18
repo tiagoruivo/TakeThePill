@@ -461,5 +461,4 @@ public class PillEdit extends Activity {
 	};
 }
 
-
-//Añadir que no se han puesto horas aun.
+//TODO que no se puedan añadir horas repetidas
