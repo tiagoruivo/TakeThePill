@@ -61,10 +61,15 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <Button
-            android:id="@+id/addtime"
+            android:id="@+id/add_time"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_time" />
+        <Button
+            android:id="@+id/delete_time"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_time" />
 
         <Button
             android:id="@+id/confirm"

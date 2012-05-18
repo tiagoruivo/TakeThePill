@@ -31,6 +31,7 @@
     <!-- Buttons -->
     <string name="confirm">Confirm</string>
     <string name="add_time">Add Time</string>
+    <string name="delete_time">Delete Time</string>
     <string name="add_days">Add Days</string>
     <string name="remove_time">Remove</string>
     

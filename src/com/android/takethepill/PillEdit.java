@@ -18,13 +18,10 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -75,7 +72,8 @@ public class PillEdit extends Activity {
 		//Recuperamos botones
 		Button confirmButton = (Button) findViewById(R.id.confirm);
 		Button checkBox = (Button) findViewById(R.id.add_days);
-		Button addTimeButton = (Button) findViewById(R.id.addtime);		
+		Button addTimeButton = (Button) findViewById(R.id.add_time);	
+		Button deleteTimeButton = (Button) findViewById(R.id.delete_time);
 
 		/*
 		 * Buscamos la fila de la pill a editar. 
@@ -143,30 +141,39 @@ public class PillEdit extends Activity {
 
 		});
 
-//		//Listener para cuando se pulsa sobre un elemento de la lista de horas
-//		mTimeList.setOnItemClickListener(new OnItemClickListener(){
-//
-//			@Override
-//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//				AlertDialog.Builder adb=new AlertDialog.Builder(PillEdit.this);
-//				adb.setTitle("Delete?");
-//				adb.setMessage("Are you sure you want to delete " + mArrayHours.get(arg2));
-//				final int positionToRemove = arg2;
-//				adb.setNegativeButton("Cancel", null);
-//				adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
-//
-//					//Gestion del boton que confirma la eliminacion
-//					public void onClick(DialogInterface dialog, int which) {
-//						mArrayHours.remove(positionToRemove);
-//						updateList();
-//					}});
-//
-//				adb.show();
-//			}
-//		});		
-		
+		//Listener para el boton de borrar horas
+		deleteTimeButton.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View view) {
+				//TODO lanzar algo para poder borrar horas.
+			}
+
+		});      
+
+		//		//Listener para cuando se pulsa sobre un elemento de la lista de horas
+		//		mTimeList.setOnItemClickListener(new OnItemClickListener(){
+		//
+		//			@Override
+		//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		//				AlertDialog.Builder adb=new AlertDialog.Builder(PillEdit.this);
+		//				adb.setTitle("Delete?");
+		//				adb.setMessage("Are you sure you want to delete " + mArrayHours.get(arg2));
+		//				final int positionToRemove = arg2;
+		//				adb.setNegativeButton("Cancel", null);
+		//				adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+		//
+		//					//Gestion del boton que confirma la eliminacion
+		//					public void onClick(DialogInterface dialog, int which) {
+		//						mArrayHours.remove(positionToRemove);
+		//						updateList();
+		//					}});
+		//
+		//				adb.show();
+		//			}
+		//		});		
+
 		String[] pillsNames = getResources().getStringArray(R.array.pill_names);
-		
+
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.pills_item_auto, pillsNames);
 		mPillText.setAdapter(adapter);
 	}
@@ -301,8 +308,8 @@ public class PillEdit extends Activity {
 	 * Actualiza la lista de las horas	en su elemento visual.
 	 */
 	private void updateTextTime(){
-//		mTimeList.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, mArrayHours));
-//		
+		//		mTimeList.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, mArrayHours));
+		//		
 		String stringHours="";
 		for (int i=0; i<mArrayHours.size(); i++){
 			if(mArrayHours.get(i)!=""){
@@ -312,7 +319,7 @@ public class PillEdit extends Activity {
 		}
 		if (stringHours=="") mDaysText.setText(R.string.no_days);
 		else mHoursText.setText(stringHours);
-		
+
 	}
 	/**
 	 * Añade al ArrayList de horas la hora dada por parametros
@@ -358,10 +365,10 @@ public class PillEdit extends Activity {
 			for (int i=0; i<mArrayDays.length; i++){
 				mArrayDays[i]= (mDaysText.getText().toString().indexOf(getResources().getStringArray(R.array.select_dialog_day)[i])) !=-1;
 			}
-			
+
 			String hourString=pillcursor.getString(pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_HOUR));
 			mArrayHours=new ArrayList<String>(Arrays.asList(hourString.split(" - ")));
-			
+
 			updateTextTime();
 		}
 	}
