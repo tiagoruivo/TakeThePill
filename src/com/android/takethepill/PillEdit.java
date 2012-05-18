@@ -32,7 +32,7 @@ import android.widget.Toast;
 public class PillEdit extends Activity {
 
 	boolean backbuttom=false;
-	
+
 	//Elementos visibles:
 	private EditText mUserText;
 	private EditText mPillText;
@@ -90,6 +90,8 @@ public class PillEdit extends Activity {
 		}
 		//Se rellenan los campos como corresponda	
 		populateFields();
+
+
 		cancelAlarms();
 
 		//Listener para el boton de confirmar
@@ -109,7 +111,7 @@ public class PillEdit extends Activity {
 					Toast toast1 = Toast.makeText(getApplicationContext(),R.string.error_hour, Toast.LENGTH_SHORT);
 					toast1.show();
 				} else {
-				
+
 					updateAlarms();
 					setResult(RESULT_OK);
 					finish();
@@ -169,7 +171,7 @@ public class PillEdit extends Activity {
 		Calendar currentDay;
 		int day=calendar.get(Calendar.DAY_OF_WEEK);
 		for (int i=0; i<mArrayDays.length;i++){
-			System.out.println("i="+i);
+			//System.out.println("i="+i);
 			if ((day-1+i)==mArrayDays.length) day=day-7;
 			if(mArrayDays[day-1+i]){
 				String h;
@@ -177,7 +179,7 @@ public class PillEdit extends Activity {
 				int min;
 
 				for (int j=0; j<mArrayHours.size(); j++){
-					System.out.println("j="+j);
+					//System.out.println("j="+j);
 					h=mArrayHours.get(j);
 					hourOfDay= Integer.parseInt(h.split(":")[0]);
 					min= Integer.parseInt(h.split(":")[1]);
@@ -190,9 +192,9 @@ public class PillEdit extends Activity {
 					else
 						currentDay.add(Calendar.DAY_OF_YEAR, i);
 					long firstTime= currentDay.getTimeInMillis();
-					System.out.println(firstTime);
-					System.out.println(currentDay.get(Calendar.DATE)+ "-" + currentDay.get(Calendar.HOUR_OF_DAY) +":"+ currentDay.get(Calendar.MINUTE));
-					System.out.println(mRowId + " " + mRowId.intValue());
+					//System.out.println(firstTime);
+					//System.out.println(currentDay.get(Calendar.DATE)+ "-" + currentDay.get(Calendar.HOUR_OF_DAY) +":"+ currentDay.get(Calendar.MINUTE));
+					//System.out.println(mRowId + " " + mRowId.intValue());
 					Intent intent = new Intent(this, RepeatingAlarm.class);
 					PendingIntent sender = PendingIntent.getBroadcast(this,
 							(int)firstTime, intent, 0);
@@ -203,12 +205,12 @@ public class PillEdit extends Activity {
 			}
 		}
 	}
-	
+
 	/**
 	 * Actualiza las alarmas tras confirmar los cambios.
 	 */
 	private void updateAlarms(){
-		
+
 		//cancelAlarms();
 		// We want the alarm to go off 30 seconds from now.
 
@@ -216,7 +218,7 @@ public class PillEdit extends Activity {
 		Calendar currentDay;
 		int day=calendar.get(Calendar.DAY_OF_WEEK);
 		for (int i=0; i<mArrayDays.length;i++){
-			System.out.println("i="+i);
+			//System.out.println("i="+i);
 			if ((day-1+i)==mArrayDays.length) day=day-7;
 			if(mArrayDays[day-1+i]){
 				String h;
@@ -224,7 +226,7 @@ public class PillEdit extends Activity {
 				int min;
 
 				for (int j=0; j<mArrayHours.size(); j++){
-					System.out.println("j="+j);
+					//System.out.println("j="+j);
 					h=mArrayHours.get(j);
 					hourOfDay= Integer.parseInt(h.split(":")[0]);
 					min= Integer.parseInt(h.split(":")[1]);
@@ -237,9 +239,9 @@ public class PillEdit extends Activity {
 					else
 						currentDay.add(Calendar.DAY_OF_YEAR, i);
 					long firstTime= currentDay.getTimeInMillis();
-					System.out.println(firstTime);
-					System.out.println(currentDay.get(Calendar.DATE)+ "-" + currentDay.get(Calendar.HOUR_OF_DAY) +":"+ currentDay.get(Calendar.MINUTE));
-					System.out.println(mRowId + " " + mRowId.intValue());
+					//System.out.println(firstTime);
+					//System.out.println(currentDay.get(Calendar.DATE)+ "-" + currentDay.get(Calendar.HOUR_OF_DAY) +":"+ currentDay.get(Calendar.MINUTE));
+					//System.out.println(mRowId + " " + mRowId.intValue());
 					Intent intent = new Intent(this, RepeatingAlarm.class);
 					PendingIntent sender = PendingIntent.getBroadcast(this,
 							(int)firstTime, intent, 0);
@@ -253,14 +255,14 @@ public class PillEdit extends Activity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-	    if (keyCode == KeyEvent.KEYCODE_BACK) {
-	    	backbuttom=true;
-	    	finish();
-	        return true;
-	    }
-	    return super.onKeyDown(keyCode, event);
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			backbuttom=true;
+			finish();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
-	
+
 	/**
 	 * Pasa de ArrayList a String las horas
 	 * @return String cn las horas
@@ -363,7 +365,7 @@ public class PillEdit extends Activity {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		
+
 		super.onSaveInstanceState(outState);
 		saveState();
 		outState.putSerializable(PillsDbAdapter.KEY_ROWID, mRowId);
@@ -385,19 +387,19 @@ public class PillEdit extends Activity {
 	 */
 	private void saveState() {
 		if (!backbuttom){
-		String user = mUserText.getText().toString();
-		String pill = mPillText.getText().toString();
-		String days = mDaysText.getText().toString();
-		String hour = hourArrayToString();
-		//TODO Hay que a–adir que no cree DB si hay nulo y sacarlo de confirm.
-		if (mRowId == null) {
-			long id = mDbHelper.createPill(user, pill, days, hour);
-			if (id > 0) {
-				mRowId = id;
+			String user = mUserText.getText().toString();
+			String pill = mPillText.getText().toString();
+			String days = mDaysText.getText().toString();
+			String hour = hourArrayToString();
+			//TODO Hay que a–adir que no cree DB si hay nulo y sacarlo de confirm.
+			if (mRowId == null) {
+				long id = mDbHelper.createPill(user, pill, days, hour);
+				if (id > 0) {
+					mRowId = id;
+				}
+			} else {
+				mDbHelper.updatePill(mRowId, user, pill, days, hour);
 			}
-		} else {
-			mDbHelper.updatePill(mRowId, user, pill, days, hour);
-		}
 		}
 	}
 	/**
