@@ -37,8 +37,7 @@ public class PillEdit extends Activity {
 	//Elementos visibles:
 	private EditText mUserText;
 	private AutoCompleteTextView mPillText;
-	private TextView mDaysText;
-	private ListView mTimeList;
+	private TextView mDaysText,mHoursText;
 
 	//BBDD
 	private Long mRowId;
@@ -72,7 +71,7 @@ public class PillEdit extends Activity {
 		mUserText = (EditText) findViewById(R.id.user);
 		mPillText = (AutoCompleteTextView) findViewById(R.id.pill);
 		mDaysText = (TextView) findViewById(R.id.textDays);
-		mTimeList = (ListView) findViewById(R.id.hourList);
+		mHoursText = (TextView) findViewById(R.id.textHours);
 		//Recuperamos botones
 		Button confirmButton = (Button) findViewById(R.id.confirm);
 		Button checkBox = (Button) findViewById(R.id.add_days);
@@ -144,27 +143,27 @@ public class PillEdit extends Activity {
 
 		});
 
-		//Listener para cuando se pulsa sobre un elemento de la lista de horas
-		mTimeList.setOnItemClickListener(new OnItemClickListener(){
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				AlertDialog.Builder adb=new AlertDialog.Builder(PillEdit.this);
-				adb.setTitle("Delete?");
-				adb.setMessage("Are you sure you want to delete " + mArrayHours.get(arg2));
-				final int positionToRemove = arg2;
-				adb.setNegativeButton("Cancel", null);
-				adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
-
-					//Gestion del boton que confirma la eliminacion
-					public void onClick(DialogInterface dialog, int which) {
-						mArrayHours.remove(positionToRemove);
-						updateList();
-					}});
-
-				adb.show();
-			}
-		});		
+//		//Listener para cuando se pulsa sobre un elemento de la lista de horas
+//		mTimeList.setOnItemClickListener(new OnItemClickListener(){
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+//				AlertDialog.Builder adb=new AlertDialog.Builder(PillEdit.this);
+//				adb.setTitle("Delete?");
+//				adb.setMessage("Are you sure you want to delete " + mArrayHours.get(arg2));
+//				final int positionToRemove = arg2;
+//				adb.setNegativeButton("Cancel", null);
+//				adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+//
+//					//Gestion del boton que confirma la eliminacion
+//					public void onClick(DialogInterface dialog, int which) {
+//						mArrayHours.remove(positionToRemove);
+//						updateList();
+//					}});
+//
+//				adb.show();
+//			}
+//		});		
 		
 		String[] pillsNames = getResources().getStringArray(R.array.pill_names);
 		
@@ -283,24 +282,6 @@ public class PillEdit extends Activity {
 	}
 
 	/**
-	 * Pasa de String a ArrayList las horas y lo guarda en el capo correspondiente
-	 * @param hourString Horas a pasar al ArrayList
-	 */
-	private void hourStringToArray(String hourString){
-		mArrayHours=new ArrayList<String>(Arrays.asList(hourString.split(" - ")));
-	}
-
-	/**
-	 * Pasa de String a Array los dias y fija a true los valores marcados del dialogo de dias.
-	 * @param daysString
-	 */
-	private void daysStringToArray(String daysString){
-		for (int i=0; i<mArrayDays.length; i++){
-			mArrayDays[i]= (daysString.indexOf(getResources().getStringArray(R.array.select_dialog_day)[i])) !=-1;
-		}
-	}
-
-	/**
 	 * Actualiza los dias a partir del dialogo de seleccion de dias y 
 	 * lo fija como texto en el elemento visual correspondiente.
 	 */
@@ -319,8 +300,19 @@ public class PillEdit extends Activity {
 	/**
 	 * Actualiza la lista de las horas	en su elemento visual.
 	 */
-	private void updateList(){
-		mTimeList.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, mArrayHours));
+	private void updateTextTime(){
+//		mTimeList.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, mArrayHours));
+//		
+		String stringHours="";
+		for (int i=0; i<mArrayHours.size(); i++){
+			if(mArrayHours.get(i)!=""){
+				if (stringHours != "") stringHours= stringHours + " - ";
+				stringHours= stringHours + mArrayHours.get(i).toString();
+			}
+		}
+		if (stringHours=="") mDaysText.setText(R.string.no_days);
+		else mHoursText.setText(stringHours);
+		
 	}
 	/**
 	 * Añade al ArrayList de horas la hora dada por parametros
@@ -333,7 +325,7 @@ public class PillEdit extends Activity {
 				new StringBuilder()
 				.append(pad(hourOfDay)).append(":")
 				.append(pad(minute)).toString());
-		updateList();
+		updateTextTime();
 	}
 
 	/**
@@ -362,10 +354,15 @@ public class PillEdit extends Activity {
 			mPillText.setText(pillcursor.getString(pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_PILL)));
 			//Fija los dias de la semana
 			mDaysText.setText(pillcursor.getString(pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_DAYS)));
-			//Fija las horas de la pill
-			daysStringToArray(mDaysText.getText().toString());
-			hourStringToArray(pillcursor.getString(pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_HOUR)));
-			updateList();
+			//prepara el dialogo de dias	
+			for (int i=0; i<mArrayDays.length; i++){
+				mArrayDays[i]= (mDaysText.getText().toString().indexOf(getResources().getStringArray(R.array.select_dialog_day)[i])) !=-1;
+			}
+			
+			String hourString=pillcursor.getString(pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_HOUR));
+			mArrayHours=new ArrayList<String>(Arrays.asList(hourString.split(" - ")));
+			
+			updateTextTime();
 		}
 	}
 

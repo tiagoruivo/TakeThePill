@@ -52,11 +52,13 @@
             android:layout_height="wrap_content"
             android:text="@string/add_days" />
 
-        <ListView
-            android:id="@+id/hourList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/no_time" />
+        <TextView
+            android:id="@+id/textHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/no_hours"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <Button
             android:id="@+id/addtime"
@@ -70,4 +72,5 @@
             android:layout_height="wrap_content"
             android:text="@string/confirm" />
     </LinearLayout>
-</ScrollView>
+
+</ScrollView>
