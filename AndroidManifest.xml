@@ -19,6 +19,7 @@
         <activity android:name=".RepeatingAlarm" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".HelpActivity" />
+        <activity android:name=".PillViewActivity" />
     </application>
 
 </manifest>

@@ -162,7 +162,9 @@ public class TakeThePill extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		//TODO
+		Intent i1 = new Intent(this, PillViewActivity.class);
+		i1.putExtra(PillsDbAdapter.KEY_ROWID, id);
+		startActivity(i1);
 		
 	}	
 

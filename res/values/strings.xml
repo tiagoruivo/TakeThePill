@@ -7,6 +7,9 @@
     <string name="about_title">About TakeThePill</string>
     <string name="help">Press menu button to add pills. Press over a pill to edit or delete..</string>
     <string name="help_title">Help</string>
+    <string name="pill_view_title">Pill</string>
+    
+    
     <!-- Menus -->
     <string name="menu_insert">Add Pill</string>
     <string name="menu_prefs">Change Preferences</string>
