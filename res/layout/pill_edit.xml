@@ -12,7 +12,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -21,26 +21,33 @@
 
             <EditText
                 android:id="@+id/user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:inputType="textPersonName" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pill" />
 
-            <EditText
+<!--             <EditText -->
+<!--                 android:id="@+id/pill" -->
+<!--                 android:layout_width="match_parent" -->
+<!--                 android:layout_height="0dip" -->
+<!--                 android:layout_weight="1" /> -->
+
+            <AutoCompleteTextView
                 android:id="@+id/pill"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_marginLeft="5dp" />
         </LinearLayout>
 
         <TextView

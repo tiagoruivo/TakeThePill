@@ -21,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -35,7 +36,7 @@ public class PillEdit extends Activity {
 
 	//Elementos visibles:
 	private EditText mUserText;
-	private EditText mPillText;
+	private AutoCompleteTextView mPillText;
 	private TextView mDaysText;
 	private ListView mTimeList;
 
@@ -69,7 +70,7 @@ public class PillEdit extends Activity {
 		setTitle(R.string.edit_pill);
 		//Recuperamos elementos visuales
 		mUserText = (EditText) findViewById(R.id.user);
-		mPillText = (EditText) findViewById(R.id.pill);
+		mPillText = (AutoCompleteTextView) findViewById(R.id.pill);
 		mDaysText = (TextView) findViewById(R.id.textDays);
 		mTimeList = (ListView) findViewById(R.id.hourList);
 		//Recuperamos botones
@@ -164,6 +165,11 @@ public class PillEdit extends Activity {
 				adb.show();
 			}
 		});		
+		
+		String[] pillsNames = getResources().getStringArray(R.array.pill_names);
+		
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.pills_item_auto, pillsNames);
+		mPillText.setAdapter(adapter);
 	}
 
 	private void cancelAlarms(){
