@@ -9,10 +9,13 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -25,8 +28,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+
 public class PillEdit extends Activity {
 
+	boolean backbuttom=false;
+	
 	//Elementos visibles:
 	private EditText mUserText;
 	private EditText mPillText;
@@ -84,6 +90,7 @@ public class PillEdit extends Activity {
 		}
 		//Se rellenan los campos como corresponda	
 		populateFields();
+		cancelAlarms();
 
 		//Listener para el boton de confirmar
 		confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -102,6 +109,7 @@ public class PillEdit extends Activity {
 					Toast toast1 = Toast.makeText(getApplicationContext(),R.string.error_hour, Toast.LENGTH_SHORT);
 					toast1.show();
 				} else {
+				
 					updateAlarms();
 					setResult(RESULT_OK);
 					finish();
@@ -156,19 +164,52 @@ public class PillEdit extends Activity {
 		});		
 	}
 
+	private void cancelAlarms(){
+		Calendar calendar = Calendar.getInstance();
+		Calendar currentDay;
+		int day=calendar.get(Calendar.DAY_OF_WEEK);
+		for (int i=0; i<mArrayDays.length;i++){
+			System.out.println("i="+i);
+			if ((day-1+i)==mArrayDays.length) day=day-7;
+			if(mArrayDays[day-1+i]){
+				String h;
+				int hourOfDay;
+				int min;
 
+				for (int j=0; j<mArrayHours.size(); j++){
+					System.out.println("j="+j);
+					h=mArrayHours.get(j);
+					hourOfDay= Integer.parseInt(h.split(":")[0]);
+					min= Integer.parseInt(h.split(":")[1]);
+					currentDay=Calendar.getInstance();
+					currentDay.set(Calendar.HOUR_OF_DAY, hourOfDay);
+					currentDay.set(Calendar.MINUTE, min);
+					currentDay.set(Calendar.SECOND, 0);
+					if (i==0 && currentDay.get(Calendar.HOUR_OF_DAY) < Calendar.getInstance().get(Calendar.HOUR_OF_DAY) || (currentDay.get(Calendar.MINUTE) <= Calendar.getInstance().get(Calendar.MINUTE) &&currentDay.get(Calendar.HOUR_OF_DAY) == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)))
+						currentDay.add(Calendar.DAY_OF_YEAR, i+7);
+					else
+						currentDay.add(Calendar.DAY_OF_YEAR, i);
+					long firstTime= currentDay.getTimeInMillis();
+					System.out.println(firstTime);
+					System.out.println(currentDay.get(Calendar.DATE)+ "-" + currentDay.get(Calendar.HOUR_OF_DAY) +":"+ currentDay.get(Calendar.MINUTE));
+					System.out.println(mRowId + " " + mRowId.intValue());
+					Intent intent = new Intent(this, RepeatingAlarm.class);
+					PendingIntent sender = PendingIntent.getBroadcast(this,
+							(int)firstTime, intent, 0);
+
+					AlarmManager am = (AlarmManager) PillEdit.this.getSystemService(Context.ALARM_SERVICE);
+					am.cancel(sender);
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Actualiza las alarmas tras confirmar los cambios.
 	 */
 	private void updateAlarms(){
-		Intent intent = new Intent(PillEdit.this, RepeatingAlarm.class);
-		PendingIntent sender = PendingIntent.getBroadcast(PillEdit.this,
-				0, intent, 0);
-
-		// And cancel the alarm.
-		AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
-		//am.cancel(sender);
-
+		
+		//cancelAlarms();
 		// We want the alarm to go off 30 seconds from now.
 
 		Calendar calendar = Calendar.getInstance();
@@ -190,18 +231,36 @@ public class PillEdit extends Activity {
 					currentDay=Calendar.getInstance();
 					currentDay.set(Calendar.HOUR_OF_DAY, hourOfDay);
 					currentDay.set(Calendar.MINUTE, min);
-					if (i==0 || currentDay.get(Calendar.HOUR_OF_DAY) <= Calendar.getInstance().get(Calendar.HOUR_OF_DAY) || currentDay.get(Calendar.MINUTE) <= Calendar.getInstance().get(Calendar.MINUTE))
+					currentDay.set(Calendar.SECOND, 0);
+					if (i==0 && currentDay.get(Calendar.HOUR_OF_DAY) < Calendar.getInstance().get(Calendar.HOUR_OF_DAY) || (currentDay.get(Calendar.MINUTE) <= Calendar.getInstance().get(Calendar.MINUTE) &&currentDay.get(Calendar.HOUR_OF_DAY) == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)))
 						currentDay.add(Calendar.DAY_OF_YEAR, i+7);
 					else
 						currentDay.add(Calendar.DAY_OF_YEAR, i);
 					long firstTime= currentDay.getTimeInMillis();
-					am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-							firstTime, 7*24*3600*1000, sender);
+					System.out.println(firstTime);
+					System.out.println(currentDay.get(Calendar.DATE)+ "-" + currentDay.get(Calendar.HOUR_OF_DAY) +":"+ currentDay.get(Calendar.MINUTE));
+					System.out.println(mRowId + " " + mRowId.intValue());
+					Intent intent = new Intent(this, RepeatingAlarm.class);
+					PendingIntent sender = PendingIntent.getBroadcast(this,
+							(int)firstTime, intent, 0);
+
+					AlarmManager am = (AlarmManager) PillEdit.this.getSystemService(Context.ALARM_SERVICE);
+					am.setRepeating(AlarmManager.RTC_WAKEUP, firstTime, 7*24*3600*1000, sender);
 				}
 			}
 		}
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK) {
+	    	backbuttom=true;
+	    	finish();
+	        return true;
+	    }
+	    return super.onKeyDown(keyCode, event);
+	}
+	
 	/**
 	 * Pasa de ArrayList a String las horas
 	 * @return String cn las horas
@@ -304,6 +363,7 @@ public class PillEdit extends Activity {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
+		
 		super.onSaveInstanceState(outState);
 		saveState();
 		outState.putSerializable(PillsDbAdapter.KEY_ROWID, mRowId);
@@ -324,6 +384,7 @@ public class PillEdit extends Activity {
 	 * Salva el estado antes de pasar a otra actividad
 	 */
 	private void saveState() {
+		if (!backbuttom){
 		String user = mUserText.getText().toString();
 		String pill = mPillText.getText().toString();
 		String days = mDaysText.getText().toString();
@@ -336,6 +397,7 @@ public class PillEdit extends Activity {
 			}
 		} else {
 			mDbHelper.updatePill(mRowId, user, pill, days, hour);
+		}
 		}
 	}
 	/**
