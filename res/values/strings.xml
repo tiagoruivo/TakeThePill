@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    
+	<!-- App -->
     <string name="app_name">TakeThePill</string>
     <string name="no_pills">No medicines yet, press menu button.</string>
     <string name="about">This is an aplication for remind you to take your pills.</string>
@@ -8,32 +9,45 @@
     <string name="help">Press menu button to add pills. Press over a pill to edit or delete..</string>
     <string name="help_title">Help</string>
     <string name="pill_view_title">Pill</string>
-    
+    <string name="preferences_title">Preferences</string>
+    <string name="user">User</string>
+    <string name="pill">Pill</string>
+    <string name="hour">Hour</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
     
     <!-- Menus -->
     <string name="menu_insert">Add Pill</string>
     <string name="menu_prefs">Change Preferences</string>
     <string name="menu_help">Help</string>
-    <string name="menu_about">About TakeThePill...</string>
+    <string name="menu_about">About TakeThePill&#8230;</string> <!-- "&#8230;" = "..." -->
     <string name="menu_delete">Delete Pill</string>
     <string name="menu_edit">Edit Pill</string>
     <string name="edit_pill">Edit Pill</string>
     <string name="changed_prefs">Preferences were changed</string>
+    
+    <!-- Buttons -->
     <string name="confirm">Confirm</string>
     <string name="add_time">Add Time</string>
+    <string name="add_days">Add Days</string>
     <string name="remove_time">Remove</string>
+    
+    <!-- No things -->
     <string name="no_time">No time yet</string>
     <string name="no_days">No days yet</string>
+    <string name="no_hours">No hours yet</string>
+    
+    <!-- Dialogs -->
     <string name="alert_dialog_multi_choice">Select a day</string>
     <string name="alert_dialog_ok">OK</string>
-    <string name="alert_dialog_cancel">Cancel</string>
-    <string name="add_days">Add Days</string>
-    <string name="user">User</string>
-    <string name="pill">Pill</string>
-    <string name="hour">Hour</string>
+    <string name="alert_dialog_cancel">Cancel</string>    
+    
+    <!-- Errors  -->
     <string name="error_hour">Please select at least one hour</string>
     <string name="error_day">Please select at least one day</string>
     <string name="error_user">Please type the user name</string>
     <string name="error_pill">Please type a pill name</string>
+    <string name="error_email">Please set a valid email adress</string>
+    <string name="error_phone">Please set a valid phone number</string>
 
 </resources>

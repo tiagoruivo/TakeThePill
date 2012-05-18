@@ -82,14 +82,13 @@ public class TakeThePill extends ListActivity {
 	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item selection 
 		switch (item.getItemId()){ 
 		case R.id.insert_id: 
 			createPill();
 			return true; 
 		case R.id.prefs_id: 
-			//TODO Activity para cambiar las preferencias
-			setPrefs("mr.pujo@gmail.com","650928719");
+			Intent i0 = new Intent(this, PreferencesActivity.class);
+			startActivity(i0);
 			return true;
 		case R.id.help_id:
 			Intent i1 = new Intent(this, HelpActivity.class);
@@ -110,7 +109,6 @@ public class TakeThePill extends ListActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		//menu.add(0, DELETE_ID, 0, R.string.menu_delete);
 		MenuInflater inflater = getMenuInflater(); 
 		inflater.inflate(R.menu.context_menu, menu);
 	}
@@ -124,7 +122,7 @@ public class TakeThePill extends ListActivity {
 		final long id=info.id;
 		switch(item.getItemId()) {
 		case R.id.delete_id:
-			
+
 			AlertDialog.Builder adb=new AlertDialog.Builder(TakeThePill.this);
 			adb.setTitle("Delete?");
 			adb.setMessage("Are you sure?");
@@ -144,7 +142,7 @@ public class TakeThePill extends ListActivity {
 			startActivityForResult(i, ACTIVITY_EDIT);			
 			return true;
 		}
-		
+
 		return super.onContextItemSelected(item);
 	}
 	/**
@@ -165,7 +163,7 @@ public class TakeThePill extends ListActivity {
 		Intent i1 = new Intent(this, PillViewActivity.class);
 		i1.putExtra(PillsDbAdapter.KEY_ROWID, id);
 		startActivity(i1);
-		
+
 	}	
 
 	/**
@@ -185,18 +183,6 @@ public class TakeThePill extends ListActivity {
 		mPhone= settings.getString(PHONE_KEY, "0");
 	}
 
-	private void setPrefs(String email, String phone){
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		SharedPreferences.Editor editor = settings.edit();	
 
-		editor.putString(EMAIL_KEY, email);
-		editor.putString(PHONE_KEY, phone);
-
-		editor.commit();
-
-		Toast toast = Toast.makeText(getApplicationContext(),R.string.changed_prefs, Toast.LENGTH_SHORT);
-		toast.show();
-
-	}
 }
 

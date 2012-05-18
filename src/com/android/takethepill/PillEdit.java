@@ -3,6 +3,7 @@ package com.android.takethepill;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -14,7 +15,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;

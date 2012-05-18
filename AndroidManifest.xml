@@ -20,6 +20,7 @@
         <activity android:name=".AboutActivity" />
         <activity android:name=".HelpActivity" />
         <activity android:name=".PillViewActivity" />
+        <activity android:name=".PreferencesActivity" />
     </application>
 
 </manifest>
