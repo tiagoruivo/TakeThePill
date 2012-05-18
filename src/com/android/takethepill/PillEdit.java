@@ -175,6 +175,8 @@ public class PillEdit extends Activity {
 		Calendar calendar = Calendar.getInstance();
 		Calendar currentDay;
 		int day=calendar.get(Calendar.DAY_OF_WEEK);
+		Intent intent = new Intent(this, RepeatingAlarm.class);
+		
 		for (int i=0; i<mArrayDays.length;i++){
 			//System.out.println("i="+i);
 			if ((day-1+i)==mArrayDays.length) day=day-7;
@@ -182,7 +184,7 @@ public class PillEdit extends Activity {
 				String h;
 				int hourOfDay;
 				int min;
-
+				
 				for (int j=0; j<mArrayHours.size(); j++){
 					//System.out.println("j="+j);
 					h=mArrayHours.get(j);
@@ -200,7 +202,6 @@ public class PillEdit extends Activity {
 					//System.out.println(firstTime);
 					//System.out.println(currentDay.get(Calendar.DATE)+ "-" + currentDay.get(Calendar.HOUR_OF_DAY) +":"+ currentDay.get(Calendar.MINUTE));
 					//System.out.println(mRowId + " " + mRowId.intValue());
-					Intent intent = new Intent(this, RepeatingAlarm.class);
 					PendingIntent sender = PendingIntent.getBroadcast(this,
 							(int)firstTime, intent, 0);
 
@@ -222,6 +223,10 @@ public class PillEdit extends Activity {
 		Calendar calendar = Calendar.getInstance();
 		Calendar currentDay;
 		int day=calendar.get(Calendar.DAY_OF_WEEK);
+		Intent intent = new Intent(this, RepeatingAlarm.class);
+		intent.putExtra("user", mUserText.getText().toString());
+		intent.putExtra("pill", mPillText.getText().toString());
+		
 		for (int i=0; i<mArrayDays.length;i++){
 			//System.out.println("i="+i);
 			if ((day-1+i)==mArrayDays.length) day=day-7;
@@ -247,7 +252,9 @@ public class PillEdit extends Activity {
 					//System.out.println(firstTime);
 					//System.out.println(currentDay.get(Calendar.DATE)+ "-" + currentDay.get(Calendar.HOUR_OF_DAY) +":"+ currentDay.get(Calendar.MINUTE));
 					//System.out.println(mRowId + " " + mRowId.intValue());
-					Intent intent = new Intent(this, RepeatingAlarm.class);
+//					Intent intent = new Intent(this, RepeatingAlarm.class);
+//					intent.putExtra("user", mUserText.getText().toString());
+//					intent.putExtra("pill", mPillText.getText().toString());
 					PendingIntent sender = PendingIntent.getBroadcast(this,
 							(int)firstTime, intent, 0);
 

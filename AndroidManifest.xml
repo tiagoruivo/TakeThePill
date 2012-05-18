@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".PillEdit" />
+         <activity android:name=".Notifications" />
         <receiver android:name=".RepeatingAlarm"/>
         <activity android:name=".AboutActivity" />
         <activity android:name=".HelpActivity" />
