@@ -472,7 +472,7 @@ public class PillEdit extends Activity {
 			mRemoveTime=new boolean [mArrayHours.size()];
 			return new AlertDialog.Builder(this)
 			.setIcon(R.drawable.ic_popup_reminder)
-			.setTitle(R.string.alert_dialog_multi_choice)
+			.setTitle(R.string.alert_dialog_remove_time)
 			.setMultiChoiceItems(mArrayHours.toArray(new CharSequence[mArrayHours.size()]),mRemoveTime,
 					new DialogInterface.OnMultiChoiceClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton, boolean isChecked) {}})
@@ -529,8 +529,3 @@ public class PillEdit extends Activity {
 
 	}
 }
-
-
-
-
-

@@ -1,6 +1,7 @@
 package com.android.takethepill;
 
-import android.app.Activity;
+import java.util.Calendar;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -31,15 +32,17 @@ public class RepeatingAlarm extends BroadcastReceiver
 		Bundle extras = intent.getExtras();
 		String user=extras.getString("user");
 		String pill=extras.getString("pill");
-		
-		
+		Calendar calendar= Calendar.getInstance();
+		String hour=calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE);
+		System.out.println(hour);
 		Notification notification = new Notification(icon, tickerText, 0);
 
 		CharSequence contentTitle = "TakeThePill";
 		CharSequence contentText = user + " - " + pill;
-		Intent notificationIntent = new Intent(context, Notification.class);
+		Intent notificationIntent = new Intent(context, Notifications.class);
 		notificationIntent.putExtra("user", user);
 		notificationIntent.putExtra("pill", pill);
+		notificationIntent.putExtra("hour", hour);
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
 		notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);

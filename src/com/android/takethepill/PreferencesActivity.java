@@ -71,7 +71,7 @@ public class PreferencesActivity extends Activity {
 		mPhoneText.setText(settings.getString(TakeThePill.PHONE_KEY, "0"));
 	}
 
-	public final static boolean isValidEmail(CharSequence target) {
+	public final boolean isValidEmail(CharSequence target) {
 		try {
 			return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
 		}

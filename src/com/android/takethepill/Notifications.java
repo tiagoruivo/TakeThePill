@@ -17,55 +17,95 @@
 package com.android.takethepill;
 
 import android.app.Activity;
-import android.database.Cursor;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class Notifications extends Activity {
 
-    private EditText mTitleText;
-    private EditText mBodyText;
+	private EditText mEmailText;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.notifications);
-        setTitle(R.string.title);
+		Bundle extras = getIntent().getExtras();
+		final String user=extras.getString("user");
+		final String pill=extras.getString("pill");
+		final String hour=extras.getString("hour");
 
-        Button confirmButton = (Button) findViewById(R.id.confirm);
+		setContentView(R.layout.notifications);
+		setTitle(R.string.title);
 
-        confirmButton.setOnClickListener(new View.OnClickListener() {
+		mEmailText = (EditText) findViewById(R.id.email);
 
-            public void onClick(View view) {
-                setResult(RESULT_OK);
-                finish();
-            }
+		Button emailButton = (Button) findViewById(R.id.send_email);
+		
+		Button callButton = (Button) findViewById(R.id.call);
+		
+		callButton.setOnClickListener(new View.OnClickListener() {
 
-        });
-    }
+			public void onClick(View view) {
+				Intent intent = new Intent(Intent.ACTION_CALL);
+				startActivity(intent);
+			}
+		});
 
+		emailButton.setOnClickListener(new View.OnClickListener() {
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        saveState();
-    }
+			public void onClick(View view) {
+				if(! isValidEmail(mEmailText.getText().toString())){
+					Toast toast = Toast.makeText(getApplicationContext(),
+							R.string.error_email, Toast.LENGTH_SHORT);
+					toast.show();
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        saveState();
-    }
+				} else {
+					Intent i = new Intent(Intent.ACTION_SEND);
+					i.setType("text/plain");
+					i.putExtra(Intent.EXTRA_EMAIL  , new String[]{mEmailText.getText().toString()});
+					i.putExtra(Intent.EXTRA_SUBJECT, R.string.subject);
+					i.putExtra(Intent.EXTRA_TEXT   , getString(R.string.body1) + " " + user + " " + getString(R.string.body2) + " "  + pill + " " + getString(R.string.body3) + " "  + hour);
+					try {
+						startActivity(Intent.createChooser(i, "Send mail..."));
+					} catch (android.content.ActivityNotFoundException ex) {
+						Toast.makeText(Notifications.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+					}
+				}
+			}
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
+		});
+	}
 
-    private void saveState() {
-    }
+	public final boolean isValidEmail(CharSequence target) {
+		try {
+			return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+		}
+		catch( NullPointerException exception ) {
+			return false;
+		}
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		saveState();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		saveState();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+
+	private void saveState() {
+	}
 
 }

@@ -35,6 +35,8 @@
     <string name="delete_time">Delete Time</string>
     <string name="add_days">Add Days</string>
     <string name="remove_time">Remove</string>
+    <string name="send_email">Send Email</string>
+    <string name="call">Call someone</string>    
     
     <!-- No things -->
     <string name="no_time">No time yet</string>
@@ -43,6 +45,7 @@
     
     <!-- Dialogs -->
     <string name="alert_dialog_multi_choice">Select a day</string>
+    <string name="alert_dialog_remove_time">Hours to delete</string>
     <string name="alert_dialog_ok">OK</string>
     <string name="alert_dialog_cancel">Cancel</string>    
     
@@ -53,5 +56,12 @@
     <string name="error_pill">Please type a pill name</string>
     <string name="error_email">Please set a valid email adress</string>
     <string name="error_phone">Please set a valid phone number</string>
+    
+    <!-- Email -->
+    <string name="subject">TakeThePill warning</string>
+    <string name="body1">This is a warning for </string>
+    <string name="body2"> that has to take </string>
+    <string name="body3"> at </string>
+    
 
 </resources>
