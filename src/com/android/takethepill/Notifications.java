@@ -43,9 +43,9 @@ public class Notifications extends Activity {
 		mEmailText = (EditText) findViewById(R.id.email);
 
 		Button emailButton = (Button) findViewById(R.id.send_email);
-		
+
 		Button callButton = (Button) findViewById(R.id.call);
-		
+
 		callButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {

@@ -19,15 +19,14 @@ public class RepeatingAlarm extends BroadcastReceiver
 	String ns = Context.NOTIFICATION_SERVICE;
 	NotificationManager mNotificationManager;
 	private static final int HELLO_ID = 1;
-	
-	
+
+
 	@Override
-    public void onReceive(Context context, Intent intent)
-    {
-		
-		 mNotificationManager= (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		
-		int icon = R.drawable.ic_popup_reminder;
+	public void onReceive(Context context, Intent intent){
+
+		mNotificationManager= (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		int icon = R.drawable.ic_alert;
 		CharSequence tickerText = "TakeThePill";
 		Bundle extras = intent.getExtras();
 		String user=extras.getString("user");
@@ -51,7 +50,7 @@ public class RepeatingAlarm extends BroadcastReceiver
 		notification.flags |=Notification.FLAG_INSISTENT;
 
 		mNotificationManager.notify(HELLO_ID, notification);
- 
-    }
+
+	}
 }
 
