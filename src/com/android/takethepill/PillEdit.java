@@ -22,7 +22,6 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -47,11 +46,13 @@ public class PillEdit extends Activity {
 	private ArrayList<String> mArrayHours = new ArrayList<String>();
 
 	//Days
-	private boolean [] mArrayDays= new boolean[7];	
+	private boolean [] mArrayDays= new boolean[7];
+	private boolean [] mRemoveTime;
 
 	//Dialogs
 	private static final int TIME_DIALOG_ID = 0;
 	private static final int DIALOG_MULTIPLE_CHOICE = 1;
+	private static final int DIALOG_REMOVE_TIME = 2;
 
 
 	ArrayList<String> mPeopleList;
@@ -149,7 +150,7 @@ public class PillEdit extends Activity {
 		deleteTimeButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-				//TODO lanzar algo para poder borrar horas.
+				showDialog(DIALOG_REMOVE_TIME);
 			}
 
 		});      
@@ -337,7 +338,7 @@ public class PillEdit extends Activity {
 				stringHours= stringHours + mArrayHours.get(i).toString();
 			}
 		}
-		if (stringHours=="") mDaysText.setText(R.string.no_days);
+		if (stringHours=="") mHoursText.setText(R.string.no_hours);
 		else mHoursText.setText(stringHours);
 
 	}
@@ -347,12 +348,13 @@ public class PillEdit extends Activity {
 	 * @param minute Minuto
 	 */
 	private void updateTime(int hourOfDay, int minute) {
-
-		mArrayHours.add(
-				new StringBuilder()
-				.append(pad(hourOfDay)).append(":")
-				.append(pad(minute)).toString());
-		updateTextTime();
+		String h=new StringBuilder()
+		.append(pad(hourOfDay)).append(":")
+		.append(pad(minute)).toString();
+		if (!mArrayHours.contains(h)){
+			mArrayHours.add(h);
+			updateTextTime();
+		}
 	}
 
 	/**
@@ -363,6 +365,16 @@ public class PillEdit extends Activity {
 	private static String pad(int c) {
 		if (c >= 10) return String.valueOf(c);
 		else return "0" + String.valueOf(c);
+	}
+
+	private void removeTime (boolean [] mRemoveTime){
+		for (int i=mRemoveTime.length -1; i>-1; i--){
+			if (mRemoveTime[i]){
+				mArrayHours.remove(i);
+			}
+		}
+		updateTextTime();
+		removeDialog(DIALOG_REMOVE_TIME);
 	}
 
 	/**
@@ -421,7 +433,6 @@ public class PillEdit extends Activity {
 			String pill = mPillText.getText().toString();
 			String days = mDaysText.getText().toString();
 			String hour = hourArrayToString();
-			//TODO Hay que a–adir que no cree DB si hay nulo y sacarlo de confirm.
 			if (mRowId == null) {
 				long id = mDbHelper.createPill(user, pill, days, hour);
 				if (id > 0) {
@@ -457,6 +468,22 @@ public class PillEdit extends Activity {
 					}
 				})
 				.create();
+		case DIALOG_REMOVE_TIME:
+			mRemoveTime=new boolean [mArrayHours.size()];
+			return new AlertDialog.Builder(this)
+			.setIcon(R.drawable.ic_popup_reminder)
+			.setTitle(R.string.alert_dialog_multi_choice)
+			.setMultiChoiceItems(mArrayHours.toArray(new CharSequence[mArrayHours.size()]),mRemoveTime,
+					new DialogInterface.OnMultiChoiceClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton, boolean isChecked) {}})
+				.setPositiveButton(R.string.alert_dialog_ok,
+						new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+
+						removeTime(mRemoveTime); 
+					}
+				})
+				.create();
 		}
 		return null;
 	}
@@ -469,7 +496,8 @@ public class PillEdit extends Activity {
 		switch (id) {
 		case TIME_DIALOG_ID:
 			((TimePickerDialog) dialog).updateTime(mHour, mMinute);
-			break;            
+			break;  
+
 		}
 	}  
 
@@ -506,4 +534,3 @@ public class PillEdit extends Activity {
 
 
 
-//TODO que no se puedan añadir horas repetidas
