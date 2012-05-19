@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,7 +33,7 @@ public class PillEdit extends Activity {
 	boolean backbuttom=false;
 
 	//Elementos visibles:
-	private EditText mUserText;
+	private AutoCompleteTextView mUserText;
 	private AutoCompleteTextView mPillText;
 	private TextView mDaysText,mHoursText;
 
@@ -52,6 +53,9 @@ public class PillEdit extends Activity {
 	private static final int TIME_DIALOG_ID = 0;
 	private static final int DIALOG_MULTIPLE_CHOICE = 1;
 
+
+	ArrayList<String> mPeopleList;
+
 	/**
 	 * Metodo llamado al crear la actividad
 	 */
@@ -65,7 +69,7 @@ public class PillEdit extends Activity {
 		setContentView(R.layout.pill_edit);
 		setTitle(R.string.edit_pill);
 		//Recuperamos elementos visuales
-		mUserText = (EditText) findViewById(R.id.user);
+		mUserText = (AutoCompleteTextView) findViewById(R.id.user);
 		mPillText = (AutoCompleteTextView) findViewById(R.id.pill);
 		mDaysText = (TextView) findViewById(R.id.textDays);
 		mHoursText = (TextView) findViewById(R.id.textHours);
@@ -176,6 +180,15 @@ public class PillEdit extends Activity {
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.pills_item_auto, pillsNames);
 		mPillText.setAdapter(adapter);
+
+		populatePeopleList();		
+
+
+		String[] userNames = mPeopleList.toArray(new String[0]);
+		ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, R.layout.users_item_auto,  userNames);
+		mUserText.setAdapter(adapter2);
+
+
 	}
 
 	private void cancelAlarms(){
@@ -183,7 +196,7 @@ public class PillEdit extends Activity {
 		Calendar currentDay;
 		int day=calendar.get(Calendar.DAY_OF_WEEK);
 		Intent intent = new Intent(this, RepeatingAlarm.class);
-		
+
 		for (int i=0; i<mArrayDays.length;i++){
 			//System.out.println("i="+i);
 			if ((day-1+i)==mArrayDays.length) day=day-7;
@@ -191,7 +204,7 @@ public class PillEdit extends Activity {
 				String h;
 				int hourOfDay;
 				int min;
-				
+
 				for (int j=0; j<mArrayHours.size(); j++){
 					//System.out.println("j="+j);
 					h=mArrayHours.get(j);
@@ -233,7 +246,7 @@ public class PillEdit extends Activity {
 		Intent intent = new Intent(this, RepeatingAlarm.class);
 		intent.putExtra("user", mUserText.getText().toString());
 		intent.putExtra("pill", mPillText.getText().toString());
-		
+
 		for (int i=0; i<mArrayDays.length;i++){
 			//System.out.println("i="+i);
 			if ((day-1+i)==mArrayDays.length) day=day-7;
@@ -259,9 +272,9 @@ public class PillEdit extends Activity {
 					//System.out.println(firstTime);
 					//System.out.println(currentDay.get(Calendar.DATE)+ "-" + currentDay.get(Calendar.HOUR_OF_DAY) +":"+ currentDay.get(Calendar.MINUTE));
 					//System.out.println(mRowId + " " + mRowId.intValue());
-//					Intent intent = new Intent(this, RepeatingAlarm.class);
-//					intent.putExtra("user", mUserText.getText().toString());
-//					intent.putExtra("pill", mPillText.getText().toString());
+					//					Intent intent = new Intent(this, RepeatingAlarm.class);
+					//					intent.putExtra("user", mUserText.getText().toString());
+					//					intent.putExtra("pill", mPillText.getText().toString());
 					PendingIntent sender = PendingIntent.getBroadcast(this,
 							(int)firstTime, intent, 0);
 
@@ -470,6 +483,27 @@ public class PillEdit extends Activity {
 			updateTime(mHour, mMinute);
 		}
 	};
+
+
+	private void populatePeopleList(){
+
+		mPeopleList= new ArrayList<String>();
+		mPeopleList.clear();
+
+		Cursor people = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, new String[] {}, null, null, null);
+
+		while (people.moveToNext()) {
+			String contactName = people.getString(people.getColumnIndex(
+					ContactsContract.Contacts.DISPLAY_NAME));
+			if(contactName!=null)mPeopleList.add(contactName);
+		}
+		people.close();
+
+	}
 }
+
+
+
+
 
 //TODO que no se puedan añadir horas repetidas

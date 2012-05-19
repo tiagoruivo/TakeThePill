@@ -10,12 +10,26 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true" >
+
+            <!--
+            Capa que recibe el foco para 
+            que no se lo quede el primer edit text
+            -->
+
+            <requestFocus />
+        </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/user" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,7 +79,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_time" />
-        <Button
+
+        <Button
             android:id="@+id/delete_time"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

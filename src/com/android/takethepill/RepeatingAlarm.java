@@ -37,7 +37,7 @@ public class RepeatingAlarm extends BroadcastReceiver
 
 		CharSequence contentTitle = "TakeThePill";
 		CharSequence contentText = user + " - " + pill;
-		Intent notificationIntent = new Intent(context, Notifications.class);
+		Intent notificationIntent = new Intent(context, Notification.class);
 		notificationIntent.putExtra("user", user);
 		notificationIntent.putExtra("pill", pill);
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
