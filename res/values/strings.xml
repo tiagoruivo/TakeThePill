@@ -37,7 +37,12 @@
     <string name="add_days">Add Days</string>
     <string name="remove_time">Remove</string>
     <string name="send_email">Send Email</string>
-    <string name="call">Call someone</string>    
+    <string name="call">Call someone</string> 
+    
+    <!-- Prefs -->
+    <string name="checkbox_alarm">Alarms Enabled</string>
+    <string name="default_email">Please, set an email</string> 
+    <string name="default_phone">Please, set a phone number</string>   
     
     <!-- No things -->
     <string name="no_time">No time yet</string>

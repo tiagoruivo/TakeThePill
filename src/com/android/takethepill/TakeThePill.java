@@ -28,6 +28,7 @@ public class TakeThePill extends ListActivity {
 	public static final String PREFS_NAME = "PrefsFile";
 	public static final String EMAIL_KEY = "email";
 	public static final String PHONE_KEY = "phone";
+	public static final String ALARMS_KEY = "alarms_enabled";
 	private String mEmail, mPhone;
 
 	/**

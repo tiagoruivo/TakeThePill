@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.telephony.PhoneNumberUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class PreferencesActivity extends Activity {
 	private TextView mEmailText;
 	private TextView mPhoneText;
+	private CheckBox mAlarmsCheckbox;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -20,6 +22,7 @@ public class PreferencesActivity extends Activity {
 
 		mEmailText = (TextView) findViewById(R.id.email);
 		mPhoneText = (TextView) findViewById(R.id.phone);
+		mAlarmsCheckbox=(CheckBox) findViewById(R.id.checkBox_alarms);
 		Button confirmButton = (Button) findViewById(R.id.confirm_prefs);
 
 
@@ -30,6 +33,7 @@ public class PreferencesActivity extends Activity {
 			public void onClick(View view) {
 				String email = mEmailText.getText().toString();
 				String phone = mPhoneText.getText().toString();
+				boolean alarmsEnabled = mAlarmsCheckbox.isChecked();
 
 				if(! isValidEmail(email)){
 					Toast toast = Toast.makeText(getApplicationContext(),
@@ -41,7 +45,7 @@ public class PreferencesActivity extends Activity {
 							R.string.error_phone, Toast.LENGTH_SHORT);
 					toast.show();
 				} else {
-					setPrefs(email, phone);
+					setPrefs(email, phone, alarmsEnabled);
 					setResult(RESULT_OK);
 					finish();
 				}
@@ -50,12 +54,13 @@ public class PreferencesActivity extends Activity {
 		});
 	}
 
-	private void setPrefs(String email, String phone){
+	private void setPrefs(String email, String phone, boolean alarmsEnabled){
 		SharedPreferences settings = getSharedPreferences(TakeThePill.PREFS_NAME, 0);
 		SharedPreferences.Editor editor = settings.edit();	
 
 		editor.putString(TakeThePill.EMAIL_KEY, email);
 		editor.putString(TakeThePill.PHONE_KEY, phone);
+		editor.putBoolean(TakeThePill.ALARMS_KEY, alarmsEnabled);
 
 		editor.commit();
 
@@ -67,8 +72,9 @@ public class PreferencesActivity extends Activity {
 	private void restorePrefs(){
 		// Restore preferences
 		SharedPreferences settings = getSharedPreferences(TakeThePill.PREFS_NAME, 0);
-		mEmailText.setText(settings.getString(TakeThePill.EMAIL_KEY, "empty"));
-		mPhoneText.setText(settings.getString(TakeThePill.PHONE_KEY, "0"));
+		mEmailText.setText(settings.getString(TakeThePill.EMAIL_KEY, getResources().getString(R.string.default_email)));
+		mPhoneText.setText(settings.getString(TakeThePill.PHONE_KEY, getResources().getString(R.string.default_phone)));
+		mAlarmsCheckbox.setChecked(settings.getBoolean(TakeThePill.ALARMS_KEY, true));
 	}
 
 	public final boolean isValidEmail(CharSequence target) {
