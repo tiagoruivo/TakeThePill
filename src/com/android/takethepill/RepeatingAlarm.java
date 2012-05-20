@@ -5,9 +5,9 @@ import java.util.Calendar;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.BroadcastReceiver;
 import android.os.Bundle;
 
 /**
@@ -19,16 +19,15 @@ public class RepeatingAlarm extends BroadcastReceiver
 	String ns = Context.NOTIFICATION_SERVICE;
 	NotificationManager mNotificationManager;
 	private static final int HELLO_ID = 1;
-	
-	
+
+
 	@Override
-    public void onReceive(Context context, Intent intent)
-    {
-		
-		 mNotificationManager= (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		
-		int icon = R.drawable.ic_popup_reminder;
-		CharSequence tickerText = "TakeThePill";
+	public void onReceive(Context context, Intent intent){
+
+		mNotificationManager= (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		int icon = R.drawable.ic_alert;
+		CharSequence tickerText = TakeThePill.getAppName();
 		Bundle extras = intent.getExtras();
 		String user=extras.getString("user");
 		String pill=extras.getString("pill");
@@ -37,7 +36,7 @@ public class RepeatingAlarm extends BroadcastReceiver
 		System.out.println(hour);
 		Notification notification = new Notification(icon, tickerText, 0);
 
-		CharSequence contentTitle = "TakeThePill";
+		CharSequence contentTitle =  TakeThePill.getAppName();
 		CharSequence contentText = user + " - " + pill;
 		Intent notificationIntent = new Intent(context, Notifications.class);
 		notificationIntent.putExtra("user", user);
@@ -50,8 +49,10 @@ public class RepeatingAlarm extends BroadcastReceiver
 		notification.flags |=Notification.FLAG_AUTO_CANCEL;
 		notification.flags |=Notification.FLAG_INSISTENT;
 
-		mNotificationManager.notify(HELLO_ID, notification);
- 
-    }
+
+		if(TakeThePill.getAlarmsEnabled())
+			mNotificationManager.notify(HELLO_ID, notification);
+
+	}
 }
 
