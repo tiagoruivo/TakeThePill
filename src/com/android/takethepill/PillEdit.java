@@ -35,6 +35,8 @@ public class PillEdit extends Activity {
 	private AutoCompleteTextView mUserText;
 	private AutoCompleteTextView mPillText;
 	private TextView mDaysText,mHoursText;
+	
+	private Button deleteTimeButton;
 
 	//BBDD
 	private Long mRowId;
@@ -78,7 +80,9 @@ public class PillEdit extends Activity {
 		Button confirmButton = (Button) findViewById(R.id.confirm);
 		Button checkBox = (Button) findViewById(R.id.add_days);
 		Button addTimeButton = (Button) findViewById(R.id.add_time);	
-		Button deleteTimeButton = (Button) findViewById(R.id.delete_time);
+		
+		deleteTimeButton = (Button) findViewById(R.id.delete_time);
+		deleteTimeButton.setEnabled(false);
 
 		/*
 		 * Buscamos la fila de la pill a editar. 
@@ -329,8 +333,6 @@ public class PillEdit extends Activity {
 	 * Actualiza la lista de las horas	en su elemento visual.
 	 */
 	private void updateTextTime(){
-		//		mTimeList.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, mArrayHours));
-		//		
 		String stringHours="";
 		for (int i=0; i<mArrayHours.size(); i++){
 			if(mArrayHours.get(i)!=""){
@@ -338,8 +340,15 @@ public class PillEdit extends Activity {
 				stringHours= stringHours + mArrayHours.get(i).toString();
 			}
 		}
-		if (stringHours=="") mHoursText.setText(R.string.no_hours);
-		else mHoursText.setText(stringHours);
+		if (stringHours==""){
+			mHoursText.setText(R.string.no_hours);
+
+			deleteTimeButton.setEnabled(false);
+		} else {
+			mHoursText.setText(stringHours);
+
+			deleteTimeButton.setEnabled(true);
+		}
 
 	}
 	/**

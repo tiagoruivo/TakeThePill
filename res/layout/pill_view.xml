@@ -66,6 +66,19 @@
             android:padding="5dip"
             android:text="@string/no_hours"
             android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@string/pill_description"
+                android:src="@drawable/ic_pill_big" />
+        </RelativeLayout>
     </LinearLayout>
 
 </ScrollView>

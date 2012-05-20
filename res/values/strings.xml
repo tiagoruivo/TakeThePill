@@ -18,6 +18,7 @@
     <string name="days">Days</string>
     <string name="email">Email</string>
     <string name="phone">Phone</string>
+    <string name="pill_description">Pill Image</string>
     
     <!-- Menus -->
     <string name="menu_insert">Add Pill</string>
