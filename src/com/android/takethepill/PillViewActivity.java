@@ -11,11 +11,8 @@ public class PillViewActivity extends Activity {
 	private TextView mPillText;
 	private TextView mDaysText;
 	private TextView mTimeText;
-	//private ListView mTimeList;
 	private Long mRowId;
 	private PillsDbAdapter mDbHelper;
-	
-	//private ArrayList<String> mArrayHours = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +27,7 @@ public class PillViewActivity extends Activity {
 		mUserText = (TextView) findViewById(R.id.text_user);
 		mPillText = (TextView) findViewById(R.id.text_pill);
 
-		mDaysText = (TextView) findViewById(R.id.view_textDays);
-		//mTimeList = (ListView) findViewById(R.id.view_hourList);
+		mDaysText = (TextView) findViewById(R.id.view_textDays);		
 		mTimeText = (TextView) findViewById(R.id.view_textHours);
 
 		mRowId = (savedInstanceState == null) ? null :
@@ -63,22 +59,13 @@ public class PillViewActivity extends Activity {
 			mDaysText.setText(pillcursor.getString(pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_DAYS)));
 			//Fija las horas de la pill
 			mTimeText.setText(pillcursor.getString(pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_HOUR)));
-//			hourStringToArray(pillcursor.getString(pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_HOUR)));
-//			updateList();
+		
 		}
 	}
+	@Override
+	public void onBackPressed() {
+	    super.onBackPressed();
+	    overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+	}
 
-//	/**
-//	 * Pasa de String a ArrayList las horas y lo guarda en el capo correspondiente
-//	 * @param hourString Horas a pasar al ArrayList
-//	 */
-//	private void hourStringToArray(String hourString){
-//		mArrayHours=new ArrayList<String>(Arrays.asList(hourString.split(" - ")));
-//	}
-//	/**
-//	 * Actualiza la lista de las horas	en su elemento visual.
-//	 */
-//	private void updateList(){
-//		mTimeList.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, mArrayHours));
-//	}
 }

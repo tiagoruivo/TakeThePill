@@ -30,7 +30,6 @@ public class TakeThePill extends ListActivity {
 	public static final String EMAIL_KEY = "email";
 	public static final String PHONE_KEY = "phone";
 	public static final String ALARMS_KEY = "alarms_enabled";
-	private String mEmail, mPhone;
 	
 	private static Context ctx;
 
@@ -41,7 +40,6 @@ public class TakeThePill extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ctx=this;
-		restorePrefs();
 		setContentView(R.layout.pills_list);
 		mDbHelper = new PillsDbAdapter(this);
 		mDbHelper.open();
@@ -167,6 +165,7 @@ public class TakeThePill extends ListActivity {
 		Intent i1 = new Intent(this, PillViewActivity.class);
 		i1.putExtra(PillsDbAdapter.KEY_ROWID, id);
 		startActivity(i1);
+		overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
 
 	}	
 
@@ -177,13 +176,6 @@ public class TakeThePill extends ListActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
 		fillData();
-	}
-
-
-	private void restorePrefs(){
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		mEmail= settings.getString(EMAIL_KEY, "empty");
-		mPhone= settings.getString(PHONE_KEY, "0");
 	}
 	
 	public static boolean getAlarmsEnabled(){
