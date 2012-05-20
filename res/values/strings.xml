@@ -19,6 +19,8 @@
     <string name="email">Email</string>
     <string name="phone">Phone</string>
     <string name="pill_description">Pill Image</string>
+    <string name="warn">Warn someone</string>
+    
     
     <!-- Menus -->
     <string name="menu_insert">Add Pill</string>
@@ -39,6 +41,7 @@
     <string name="send_email">Send Email</string>
     <string name="call">Call someone</string>
     <string name="send_me_email">Send me an email</string>
+    <string name="contacts">Search in contacts</string>
     
     <!-- Prefs -->
     <string name="checkbox_alarm">Alarms Enabled</string>
