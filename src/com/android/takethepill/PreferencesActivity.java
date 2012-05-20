@@ -70,10 +70,13 @@ public class PreferencesActivity extends Activity {
 	}
 
 	private void restorePrefs(){
-		// Restore preferences
 		SharedPreferences settings = getSharedPreferences(TakeThePill.PREFS_NAME, 0);
-		mEmailText.setText(settings.getString(TakeThePill.EMAIL_KEY, getResources().getString(R.string.default_email)));
-		mPhoneText.setText(settings.getString(TakeThePill.PHONE_KEY, getResources().getString(R.string.default_phone)));
+		String emailHint = getResources().getString(R.string.hint_email);
+		String phoneHint = getResources().getString(R.string.hint_phone);
+		String email = settings.getString(TakeThePill.EMAIL_KEY, emailHint);
+		String phone = settings.getString(TakeThePill.PHONE_KEY, phoneHint);
+		if(!email.equals(emailHint)) mEmailText.setText(email);
+		if(!phone.equals(phoneHint))mPhoneText.setText(phone);
 		mAlarmsCheckbox.setChecked(settings.getBoolean(TakeThePill.ALARMS_KEY, true));
 	}
 

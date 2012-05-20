@@ -41,8 +41,8 @@
     
     <!-- Prefs -->
     <string name="checkbox_alarm">Alarms Enabled</string>
-    <string name="default_email">Please, set an email</string> 
-    <string name="default_phone">Please, set a phone number</string>   
+    <string name="hint_email">Please, set an email</string> 
+    <string name="hint_phone">Please, set a phone number</string>   
     
     <!-- No things -->
     <string name="no_time">No time yet</string>
