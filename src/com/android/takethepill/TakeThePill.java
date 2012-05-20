@@ -2,6 +2,7 @@ package com.android.takethepill;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,6 +31,8 @@ public class TakeThePill extends ListActivity {
 	public static final String PHONE_KEY = "phone";
 	public static final String ALARMS_KEY = "alarms_enabled";
 	private String mEmail, mPhone;
+	
+	private static Context ctx;
 
 	/**
 	 * Metodo al que se llama al crear la actividad
@@ -37,6 +40,7 @@ public class TakeThePill extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ctx=this;
 		restorePrefs();
 		setContentView(R.layout.pills_list);
 		mDbHelper = new PillsDbAdapter(this);
@@ -181,7 +185,14 @@ public class TakeThePill extends ListActivity {
 		mEmail= settings.getString(EMAIL_KEY, "empty");
 		mPhone= settings.getString(PHONE_KEY, "0");
 	}
-
+	
+	public static boolean getAlarmsEnabled(){
+		SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, 0);
+		return settings.getBoolean(ALARMS_KEY, true);
+	}
+	public static String getAppName(){
+		return ctx.getResources().getString(R.string.app_name);
+	}
 
 }
 

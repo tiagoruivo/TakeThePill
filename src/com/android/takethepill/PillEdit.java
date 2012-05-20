@@ -56,8 +56,8 @@ public class PillEdit extends Activity {
 	private static final int DIALOG_MULTIPLE_CHOICE = 1;
 	private static final int DIALOG_REMOVE_TIME = 2;
 
-
-	ArrayList<String> mPeopleList;
+	//Autocompletado Nombres
+	private ArrayList<String> mPeopleList;
 
 	/**
 	 * Metodo llamado al crear la actividad
@@ -82,7 +82,7 @@ public class PillEdit extends Activity {
 		Button addTimeButton = (Button) findViewById(R.id.add_time);	
 		
 		deleteTimeButton = (Button) findViewById(R.id.delete_time);
-		deleteTimeButton.setEnabled(false);
+		deleteTimeButton.setEnabled(false);		
 
 		/*
 		 * Buscamos la fila de la pill a editar. 
@@ -118,7 +118,6 @@ public class PillEdit extends Activity {
 					Toast toast1 = Toast.makeText(getApplicationContext(),R.string.error_hour, Toast.LENGTH_SHORT);
 					toast1.show();
 				} else {
-
 					updateAlarms();
 					setResult(RESULT_OK);
 					finish();
@@ -157,29 +156,7 @@ public class PillEdit extends Activity {
 				showDialog(DIALOG_REMOVE_TIME);
 			}
 
-		});      
-
-		//		//Listener para cuando se pulsa sobre un elemento de la lista de horas
-		//		mTimeList.setOnItemClickListener(new OnItemClickListener(){
-		//
-		//			@Override
-		//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		//				AlertDialog.Builder adb=new AlertDialog.Builder(PillEdit.this);
-		//				adb.setTitle("Delete?");
-		//				adb.setMessage("Are you sure you want to delete " + mArrayHours.get(arg2));
-		//				final int positionToRemove = arg2;
-		//				adb.setNegativeButton("Cancel", null);
-		//				adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
-		//
-		//					//Gestion del boton que confirma la eliminacion
-		//					public void onClick(DialogInterface dialog, int which) {
-		//						mArrayHours.remove(positionToRemove);
-		//						updateList();
-		//					}});
-		//
-		//				adb.show();
-		//			}
-		//		});		
+		}); 
 
 		String[] pillsNames = getResources().getStringArray(R.array.pill_names);
 
@@ -242,9 +219,6 @@ public class PillEdit extends Activity {
 	 */
 	private void updateAlarms(){
 
-		//cancelAlarms();
-		// We want the alarm to go off 30 seconds from now.
-
 		Calendar calendar = Calendar.getInstance();
 		Calendar currentDay;
 		int day=calendar.get(Calendar.DAY_OF_WEEK);
@@ -253,7 +227,6 @@ public class PillEdit extends Activity {
 		intent.putExtra("pill", mPillText.getText().toString());
 
 		for (int i=0; i<mArrayDays.length;i++){
-			//System.out.println("i="+i);
 			if ((day-1+i)==mArrayDays.length) day=day-7;
 			if(mArrayDays[day-1+i]){
 				String h;
@@ -261,7 +234,6 @@ public class PillEdit extends Activity {
 				int min;
 
 				for (int j=0; j<mArrayHours.size(); j++){
-					//System.out.println("j="+j);
 					h=mArrayHours.get(j);
 					hourOfDay= Integer.parseInt(h.split(":")[0]);
 					min= Integer.parseInt(h.split(":")[1]);
@@ -274,12 +246,6 @@ public class PillEdit extends Activity {
 					else
 						currentDay.add(Calendar.DAY_OF_YEAR, i);
 					long firstTime= currentDay.getTimeInMillis();
-					//System.out.println(firstTime);
-					//System.out.println(currentDay.get(Calendar.DATE)+ "-" + currentDay.get(Calendar.HOUR_OF_DAY) +":"+ currentDay.get(Calendar.MINUTE));
-					//System.out.println(mRowId + " " + mRowId.intValue());
-					//					Intent intent = new Intent(this, RepeatingAlarm.class);
-					//					intent.putExtra("user", mUserText.getText().toString());
-					//					intent.putExtra("pill", mPillText.getText().toString());
 					PendingIntent sender = PendingIntent.getBroadcast(this,
 							(int)firstTime, intent, 0);
 
