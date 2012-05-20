@@ -18,6 +18,7 @@ package com.android.takethepill;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +47,8 @@ public class Notifications extends Activity {
 
 		Button callButton = (Button) findViewById(R.id.call);
 
+		Button emailMeButton = (Button) findViewById(R.id.send_me_email);
+
 		callButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
@@ -71,11 +74,36 @@ public class Notifications extends Activity {
 					try {
 						startActivity(Intent.createChooser(i, "Send mail..."));
 					} catch (android.content.ActivityNotFoundException ex) {
-						Toast.makeText(Notifications.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+						Toast.makeText(Notifications.this, getResources().getString(R.string.error_no_mail_clients), Toast.LENGTH_LONG).show();
 					}
 				}
 			}
 
+		});
+
+		emailMeButton.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View view) {				
+				SharedPreferences settings = getSharedPreferences(TakeThePill.PREFS_NAME, 0);
+
+				String myEmail = settings.getString(TakeThePill.EMAIL_KEY, "empty");
+
+				if(myEmail.equals("empty")){
+					Toast.makeText(Notifications.this, getResources().getString(R.string.error_no_mail_preferences), Toast.LENGTH_LONG).show();
+				} else {
+					Intent i = new Intent(Intent.ACTION_SEND);
+					i.setType("text/plain");
+					i.putExtra(Intent.EXTRA_EMAIL  , new String[]{myEmail});
+					i.putExtra(Intent.EXTRA_SUBJECT, R.string.subject);
+					i.putExtra(Intent.EXTRA_TEXT   , getString(R.string.body1) + " " + user + " " + getString(R.string.body2) + " "  + pill + " " + getString(R.string.body3) + " "  + hour);
+					try {
+						startActivity(Intent.createChooser(i, "Send mail..."));
+					} catch (android.content.ActivityNotFoundException ex) {
+						Toast.makeText(Notifications.this, getResources().getString(R.string.error_no_mail_clients), Toast.LENGTH_SHORT).show();
+					}
+				}
+
+			}
 		});
 	}
 

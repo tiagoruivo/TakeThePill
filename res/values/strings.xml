@@ -37,7 +37,8 @@
     <string name="add_days">Add Days</string>
     <string name="remove_time">Remove</string>
     <string name="send_email">Send Email</string>
-    <string name="call">Call someone</string> 
+    <string name="call">Call someone</string>
+    <string name="send_me_email">Send me an email</string>
     
     <!-- Prefs -->
     <string name="checkbox_alarm">Alarms Enabled</string>
@@ -62,6 +63,8 @@
     <string name="error_pill">Please type a pill name</string>
     <string name="error_email">Please set a valid email adress</string>
     <string name="error_phone">Please set a valid phone number</string>
+    <string name="error_no_mail_clients">There are no email clients installed</string>
+    <string name="error_no_mail_preferences">Please, set your email address in app preferences</string>
     
     <!-- Email -->
     <string name="subject">TakeThePill warning</string>
