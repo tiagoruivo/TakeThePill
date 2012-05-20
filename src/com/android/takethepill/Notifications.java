@@ -130,7 +130,7 @@ public class Notifications extends Activity {
 					Intent i = new Intent(Intent.ACTION_SEND);
 					i.setType("text/plain");
 					i.putExtra(Intent.EXTRA_EMAIL  , new String[]{myEmail});
-					i.putExtra(Intent.EXTRA_SUBJECT, R.string.subject);
+					i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject));
 					i.putExtra(Intent.EXTRA_TEXT   , getString(R.string.body1) + " " + user + " " + getString(R.string.body2) + " "  + pill + " " + getString(R.string.body3) + " "  + hour);
 					try {
 						startActivity(Intent.createChooser(i, "Send mail..."));
