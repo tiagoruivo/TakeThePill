@@ -160,7 +160,7 @@ public class TakeThePill extends ListActivity {
 		i1.putExtra(PillsDbAdapter.KEY_ROWID, id);
 		startActivity(i1);
 		overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
-
+		
 	}	
 
 	/**
@@ -178,6 +178,12 @@ public class TakeThePill extends ListActivity {
 	}
 	public static String getAppName(){
 		return ctx.getResources().getString(R.string.app_name);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		mDbHelper.close();
 	}
 
 }
