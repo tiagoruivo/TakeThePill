@@ -86,7 +86,8 @@ public class TakeThePill extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()){ 
 		case R.id.insert_id: 
-			createPill();
+			Intent i = new Intent(this, PillEdit.class);
+			startActivityForResult(i, ACTIVITY_CREATE);
 			return true; 
 		case R.id.prefs_id: 
 			Intent i0 = new Intent(this, PreferencesActivity.class);
@@ -146,18 +147,11 @@ public class TakeThePill extends ListActivity {
 		}
 
 		return super.onContextItemSelected(item);
-	}
-	/**
-	 * Metodo que inicia la actividad de crear un nuevo item en la lista
-	 */
-	private void createPill() {
-		Intent i = new Intent(this, PillEdit.class);
-		startActivityForResult(i, ACTIVITY_CREATE);
-	}	
+	}		
 
 	/**
 	 * Metodo que se llama cuando un item de la lista es seleccionado. 
-	 * Lanza la actividad de  edicion.
+	 * Lanza la actividad de  vista de pill
 	 */
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -170,7 +164,7 @@ public class TakeThePill extends ListActivity {
 	}	
 
 	/**
-	 * Metodo por el que se vuelve desde la actividad de edición.
+	 * Metodo por el que se vuelve desde otra actividad.
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
