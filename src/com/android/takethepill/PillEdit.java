@@ -42,6 +42,12 @@ public class PillEdit extends Activity {
 	private Long mRowId;
 	private PillsDbAdapter mDbHelper;
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		mDbHelper.close();
+	}
+
 	//Time
 	private int mHour;
 	private int mMinute;
