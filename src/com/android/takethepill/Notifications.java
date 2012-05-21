@@ -40,10 +40,9 @@ import android.widget.Toast;
 
 public class Notifications extends Activity {
 
-	private EditText mEmailText;
 	private TextView mContactsNameText;
-	private TextView mContactsTelText;
-	private TextView mContactsEmailText;
+	private EditText mTelText;
+	private EditText mEmailText;
 	ArrayList<String> mPeopleList;
 
 	private final int PICK_CONTACT = 1;
@@ -64,10 +63,9 @@ public class Notifications extends Activity {
 		setContentView(R.layout.notifications);
 		setTitle(R.string.title);
 
-		mEmailText = (EditText) findViewById(R.id.email);
+		mEmailText = (EditText) findViewById(R.id.email_notif);
 		mContactsNameText = (TextView) findViewById(R.id.contacts_name);
-		mContactsTelText = (TextView) findViewById(R.id.contacts_tel);
-		mContactsEmailText = (TextView) findViewById(R.id.contacts_email);
+		mTelText = (EditText) findViewById(R.id.phone_notif);
 
 		Button contactsButton= (Button) findViewById(R.id.check_contacts);
 		
@@ -89,7 +87,7 @@ public class Notifications extends Activity {
 		callButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-				Uri parsedPhoneNumber = Uri.parse("tel:"+mContactsTelText.getText().toString()); 
+				Uri parsedPhoneNumber = Uri.parse("tel:"+mTelText.getText().toString()); 
 				Intent intent = new Intent(Intent.ACTION_CALL, parsedPhoneNumber);
 				startActivity(intent);
 			}
@@ -98,7 +96,7 @@ public class Notifications extends Activity {
 		emailButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-				if(! isValidEmail(mContactsEmailText.getText().toString())){
+				if(! isValidEmail(mEmailText.getText().toString())){
 					Toast toast = Toast.makeText(getApplicationContext(),
 							R.string.error_email, Toast.LENGTH_SHORT);
 					toast.show();
@@ -106,7 +104,7 @@ public class Notifications extends Activity {
 				} else {
 					Intent i = new Intent(Intent.ACTION_SEND);
 					i.setType("text/plain");
-					i.putExtra(Intent.EXTRA_EMAIL  , new String[]{mContactsEmailText.getText().toString()});
+					i.putExtra(Intent.EXTRA_EMAIL  , new String[]{mEmailText.getText().toString()});
 					i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject));
 					i.putExtra(Intent.EXTRA_TEXT   , getString(R.string.body1) + " " + user + " " + getString(R.string.body2) + " "  + pill + " " + getString(R.string.body3) + " "  + hour);
 					try {
@@ -132,7 +130,7 @@ public class Notifications extends Activity {
 					Intent i = new Intent(Intent.ACTION_SEND);
 					i.setType("text/plain");
 					i.putExtra(Intent.EXTRA_EMAIL  , new String[]{myEmail});
-					i.putExtra(Intent.EXTRA_SUBJECT, R.string.subject);
+					i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject));
 					i.putExtra(Intent.EXTRA_TEXT   , getString(R.string.body1) + " " + user + " " + getString(R.string.body2) + " "  + pill + " " + getString(R.string.body3) + " "  + hour);
 					try {
 						startActivity(Intent.createChooser(i, "Send mail..."));
@@ -190,18 +188,25 @@ public class Notifications extends Activity {
 	          System.out.println(id);
 	          c.close();
 	          
-          Cursor c1 = getContentResolver().query(Data.CONTENT_URI,
-                  new String[] {Data._ID, Phone.NUMBER},null,null, null);
-	          if (c.moveToNext()){
-	          tel = c1.getString(c1.getColumnIndex(Phone.NUMBER));
+          Cursor c1 = getContentResolver().query(Phone.CONTENT_URI,
+                  new String[] {Phone.NUMBER},Data.CONTACT_ID + "=?",
+                          new String[] {String.valueOf(id)}, null);
+	          if(c1.moveToFirst()){;
+	          tel = c1.getString(0);
 	          }
-	          //email = c1.getString(2);
-	          
 	          c1.close();
 	         
+	          Cursor c2 = getContentResolver().query(Email.CONTENT_URI,
+	                  new String[] {Email.DATA},Data.CONTACT_ID + "=?",
+	                          new String[] {String.valueOf(id)}, null);
+		          if(c2.moveToFirst()){;
+		        email = c2.getString(0);
+		          }
+		          c1.close(); 
+	         
 	          mContactsNameText.setText(name);
-	          mContactsTelText.setText("tel:" + tel + ":");
-	          mContactsEmailText.setText(email);
+	          mTelText.setText(tel);
+	          mEmailText.setText(email);
 	        }
 	      }
 	      break;
