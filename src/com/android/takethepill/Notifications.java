@@ -1,40 +1,23 @@
-/*
- * Copyright (C) 2008 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.android.takethepill;
 
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
-
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Data;
+import android.telephony.PhoneNumberUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,10 +29,10 @@ public class Notifications extends Activity {
 	ArrayList<String> mPeopleList;
 
 	private final int PICK_CONTACT = 1;
-	
-	private String name;
-	private String tel;
-	private String email;
+
+	private String mName;
+	private String mTel;
+	private String mEmail;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,28 +51,34 @@ public class Notifications extends Activity {
 		mTelText = (EditText) findViewById(R.id.phone_notif);
 
 		Button contactsButton= (Button) findViewById(R.id.check_contacts);
-		
-		Button emailButton = (Button) findViewById(R.id.send_email);
 
-		Button callButton = (Button) findViewById(R.id.call);
+		ImageButton emailButton = (ImageButton) findViewById(R.id.send_email);
+
+		ImageButton callButton = (ImageButton) findViewById(R.id.call);
 		
+		Button emailMeButton = (Button) findViewById(R.id.send_me_email);
+
 		contactsButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
 				Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
 				startActivityForResult(intent, PICK_CONTACT);
 			}
-		});
-		
-
-		Button emailMeButton = (Button) findViewById(R.id.send_me_email);
+		});		
 
 		callButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-				Uri parsedPhoneNumber = Uri.parse("tel:"+mTelText.getText().toString()); 
-				Intent intent = new Intent(Intent.ACTION_CALL, parsedPhoneNumber);
-				startActivity(intent);
+				String phone = mTelText.getText().toString();
+				if(! PhoneNumberUtils.isGlobalPhoneNumber(phone)){
+					Toast toast = Toast.makeText(getApplicationContext(),
+							R.string.error_phone, Toast.LENGTH_SHORT);
+					toast.show();
+				} else {
+					Uri parsedPhoneNumber = Uri.parse("tel:"+phone); 
+					Intent intent = new Intent(Intent.ACTION_CALL, parsedPhoneNumber);
+					startActivity(intent);
+				}
 			}
 		});
 
@@ -150,67 +139,52 @@ public class Notifications extends Activity {
 		catch( NullPointerException exception ) {
 			return false;
 		}
-	}
+	}	
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		saveState();
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		saveState();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	private void saveState() {
-	}
-	
 	@Override
 	public void onActivityResult(int reqCode, int resultCode, Intent data) {
-	  super.onActivityResult(reqCode, resultCode, data);
+		super.onActivityResult(reqCode, resultCode, data);
 
-	  switch (reqCode) {
-	    case (PICK_CONTACT) :
-	      if (resultCode == Activity.RESULT_OK) {
-	        Uri contactData = data.getData();
-	        System.out.println(contactData.toString());
-	        Cursor c =  managedQuery(contactData, new String []{Contacts.DISPLAY_NAME, Contacts._ID}, null, null, null);
-	        if (c.moveToFirst()) {
-	          name = c.getString(0);
-	          String id=c.getString(1);
-	          System.out.println(id);
-	          c.close();
-	          
-          Cursor c1 = getContentResolver().query(Phone.CONTENT_URI,
-                  new String[] {Phone.NUMBER},Data.CONTACT_ID + "=?",
-                          new String[] {String.valueOf(id)}, null);
-	          if(c1.moveToFirst()){;
-	          tel = c1.getString(0);
-	          }
-	          c1.close();
-	         
-	          Cursor c2 = getContentResolver().query(Email.CONTENT_URI,
-	                  new String[] {Email.DATA},Data.CONTACT_ID + "=?",
-	                          new String[] {String.valueOf(id)}, null);
-		          if(c2.moveToFirst()){;
-		        email = c2.getString(0);
-		          }
-		          c1.close(); 
-	         
-	          mContactsNameText.setText(name);
-	          mTelText.setText(tel);
-	          mEmailText.setText(email);
-	        }
-	      }
-	      break;
-	  }
+		switch (reqCode) {
+		case PICK_CONTACT:
+			mName=null;
+			mEmail=null;
+			mTel=null;
+			if (resultCode == Activity.RESULT_OK) {
+				Uri contactData = data.getData();
+				Cursor c =  managedQuery(contactData, new String []{Contacts.DISPLAY_NAME, Contacts._ID}, null, null, null);
+				if (c.moveToFirst()) {
+					mName = c.getString(0);
+					String id=c.getString(1);
+					c.close();
+
+					Cursor c1 = getContentResolver().query(
+							Phone.CONTENT_URI,
+							new String[] {Phone.NUMBER},Data.CONTACT_ID + "=?",
+							new String[] {String.valueOf(id)},
+							null);
+					if(c1.moveToFirst()) mTel = c1.getString(0);
+					c1.close();
+
+					Cursor c2 = getContentResolver().query(
+							Email.CONTENT_URI,
+							new String[] {Email.DATA},Data.CONTACT_ID + "=?",
+							new String[] {String.valueOf(id)},
+							null);
+
+					if(c2.moveToFirst()) mEmail = c2.getString(0);
+					c1.close(); 
+				}				
+			}
+			if(mName==null){				
+				mContactsNameText.setText(getResources().getString(R.string.warn_someone));
+			} else {
+				mContactsNameText.setText(getResources().getString(R.string.warn)+" "+mName);
+			}
+			mTelText.setText(mTel);
+			mEmailText.setText(mEmail);
+			break;
+		}
 	}
 
 }

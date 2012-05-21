@@ -19,7 +19,8 @@
     <string name="email">Email</string>
     <string name="phone">Phone</string>
     <string name="pill_description">Pill Image</string>
-    <string name="warn">Warn someone</string>
+    <string name="warn_someone">Warn someone</string>
+    <string name="warn">Warn</string>
     
     
     <!-- Menus -->
@@ -46,7 +47,7 @@
     <!-- Prefs -->
     <string name="checkbox_alarm">Alarms Enabled</string>
     <string name="hint_email">Please, set an email</string> 
-    <string name="hint_phone">Please, set a phone number</string>   
+    <string name="hint_phone">Please, set a phone</string>   
     
     <!-- No things -->
     <string name="no_time">No time yet</string>

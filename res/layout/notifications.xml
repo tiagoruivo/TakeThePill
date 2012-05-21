@@ -3,77 +3,77 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/warn" />
+        android:id="@+id/contacts_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/warn_someone"
+        android:gravity="center" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:orientation="vertical" >
-        
-        <Button android:id="@+id/check_contacts" 
-	  android:text="@string/contacts"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
-        
-        <TextView android:id="@+id/contacts_name"
-		    android:layout_width="wrap_content"
-			android:layout_height="wrap_content" />
-
-         <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         android:orientation="horizontal" >
-        
-       <TextView android:layout_width="wrap_content"
-			android:layout_height="wrap_content" 
-			android:text="@string/email" />
-  
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email" />
+
         <EditText
             android:id="@+id/email_notif"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="@string/hint_email" />
-        </LinearLayout>
-        
-          <LinearLayout
+            android:hint="@string/hint_email"
+            android:inputType="textEmailAddress" />
+
+        <ImageButton
+            android:id="@+id/send_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/sym_action_email" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:orientation="horizontal" >
-        
- 		<TextView android:layout_width="wrap_content"
-			android:layout_height="wrap_content" 
-			android:text="@string/phone" />
-		<EditText android:id="@+id/phone_notif" 
-		  android:layout_width="wrap_content"
-			android:layout_height="wrap_content" 
-			android:layout_weight="1"/>
-	
-	</LinearLayout>
-	
-	<Button android:id="@+id/send_email" 
-	  android:text="@string/send_email"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
-	
-	<Button android:id="@+id/call" 
-	  android:text="@string/call"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
 
-	 <Button
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/phone" />
+
+        <EditText
+            android:id="@+id/phone_notif"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="@string/hint_phone"
+            android:inputType="phone" />
+
+        <ImageButton
+            android:id="@+id/call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/sym_action_call" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/check_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/contacts" />
+
+    <Button
         android:id="@+id/send_me_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/send_me_email" />
-	 
-	 </LinearLayout>
 
 </LinearLayout>
