@@ -12,7 +12,9 @@
             android:id="@+id/about_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/help" />
+            android:layout_margin="8dp"
+            android:text="@string/help"
+            android:textSize="20dp" />
     </LinearLayout>
 
 </ScrollView>

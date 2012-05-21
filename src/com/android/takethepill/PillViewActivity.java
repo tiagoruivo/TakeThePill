@@ -67,5 +67,11 @@ public class PillViewActivity extends Activity {
 	    super.onBackPressed();
 	    overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		mDbHelper.close();
+	}
 
 }

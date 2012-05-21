@@ -35,7 +35,8 @@
             android:id="@+id/send_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/sym_action_email" />
+            android:src="@android:drawable/sym_action_email"
+            android:contentDescription="@string/email_description" />
     </LinearLayout>
 
     <LinearLayout
@@ -61,7 +62,8 @@
             android:id="@+id/call"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/sym_action_call" />
+            android:src="@android:drawable/sym_action_call"
+            android:contentDescription="@string/call_description" />
     </LinearLayout>
 
     <Button
