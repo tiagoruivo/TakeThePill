@@ -1,7 +1,9 @@
 package com.android.takethepill;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -58,7 +60,7 @@ public class TakeThePill extends ListActivity {
 				PillsDbAdapter.KEY_USER,
 				PillsDbAdapter.KEY_PILL, 
 				PillsDbAdapter.KEY_DAYS,
-				PillsDbAdapter.KEY_HOUR
+				PillsDbAdapter.KEY_HOUR,
 		};
 
 		// and an array of the fields we want to bind those fields to.
@@ -134,6 +136,7 @@ public class TakeThePill extends ListActivity {
 
 				//Gestion del boton que confirma la eliminacion
 				public void onClick(DialogInterface dialog, int which) {
+					cancelAlarms(id);
 					mDbHelper.deletePill(id);
 					fillData();
 				}});
@@ -147,7 +150,24 @@ public class TakeThePill extends ListActivity {
 		}
 
 		return super.onContextItemSelected(item);
-	}		
+	}
+	
+	/**
+	 * Metodo para cancelar alarmas cuando eliminamos pill
+	 * 
+	 */
+	private void cancelAlarms(long rowId){
+		Cursor elim= mDbHelper.fetchPill(rowId);
+		int alarms=elim.getInt(elim.getColumnIndexOrThrow(PillsDbAdapter.KEY_ALARMS));
+		
+		Intent intent = new Intent(this, RepeatingAlarm.class);
+		
+		for (int i=0; i<alarms; i++) {
+		PendingIntent sender = PendingIntent.getBroadcast(this, (int) rowId*10000 + i, intent, 0);
+		AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+		am.cancel(sender);
+		}
+	}
 
 	/**
 	 * Metodo que se llama cuando un item de la lista es seleccionado. 

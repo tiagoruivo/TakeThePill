@@ -21,6 +21,8 @@ public class PillsDbAdapter {
 	public static final String KEY_DAYS = "days";
 	public static final String KEY_HOUR = "hour";
 	public static final String KEY_ROWID = "_id"; 
+	public static final String KEY_ALARMS = "alarms"; 
+	
 
 	private DatabaseHelper mDbHelper;
 	private SQLiteDatabase mDb;
@@ -39,7 +41,8 @@ public class PillsDbAdapter {
 			+KEY_USER +" text not null, "
 			+KEY_PILL +" text not null, "
 			+KEY_DAYS +" text not null, "
-			+KEY_HOUR +" text not null);";	
+			+KEY_HOUR +" text not null, "
+			+KEY_ALARMS +" integer not null);";	
 
 	private static class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -98,15 +101,17 @@ public class PillsDbAdapter {
 	 * @param pill the name of the pill
 	 * @param days the days of the pill
 	 * @param hour the hours of the pill
+	 * @param alarms the number of alarms
 	 * @return rowId or -1 if failed
 	 */
-	public long createPill(String user, String pill, String days, String hour) {
+	public long createPill(String user, String pill, String days, String hour, int alarms) {
 
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_USER, user);
 		initialValues.put(KEY_PILL, pill);
 		initialValues.put(KEY_DAYS, days);
 		initialValues.put(KEY_HOUR, hour);
+		initialValues.put(KEY_ALARMS, alarms);
 
 		return mDb.insert(DATABASE_TABLE, null, initialValues);
 	}
@@ -130,7 +135,7 @@ public class PillsDbAdapter {
 	public Cursor fetchAllPills() {
 
 		return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_USER,
-				KEY_PILL, KEY_DAYS, KEY_HOUR}, null, null, null, null, null);
+				KEY_PILL, KEY_DAYS, KEY_HOUR, KEY_ALARMS}, null, null, null, null, null);
 	}
 
 	/**
@@ -148,7 +153,8 @@ public class PillsDbAdapter {
 						KEY_USER,
 						KEY_PILL, 
 						KEY_DAYS, 
-						KEY_HOUR
+						KEY_HOUR, 
+						KEY_ALARMS
 				}, KEY_ROWID + "=" + rowId, null, null, null, null, null);
 		if (mCursor != null) {
 			mCursor.moveToFirst();
@@ -162,17 +168,20 @@ public class PillsDbAdapter {
 	 * specified using the rowId, and it is altered to use the user, 
 	 * pill, hours and days values passed in
 	 * 
-	 * @param rowId id of note to update
-	 * @param title value to set note title to
-	 * @param body value to set note body to
-	 * @return true if the note was successfully updated, false otherwise
+	 * @param user the user of the pill
+	 * @param pill the name of the pill
+	 * @param days the days of the pill
+	 * @param hour the hours of the pill
+	 * @param alarms the number of alarms
+	 * @return true if the pill was successfully updated, false otherwise
 	 */
-	public boolean updatePill(long rowId, String user, String pill, String days, String hour) {
+	public boolean updatePill(long rowId, String user, String pill, String days, String hour, int alarms) {
 		ContentValues args = new ContentValues();
 		args.put(KEY_USER, user);
 		args.put(KEY_PILL, pill);
 		args.put(KEY_DAYS, days);
 		args.put(KEY_HOUR, hour);
+		args.put(KEY_ALARMS, alarms);
 
 		return mDb.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
 	}

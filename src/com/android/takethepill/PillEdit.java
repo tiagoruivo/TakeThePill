@@ -52,6 +52,7 @@ public class PillEdit extends Activity {
 	private int mHour;
 	private int mMinute;
 	private ArrayList<String> mArrayHours = new ArrayList<String>();
+	private int mAlarms=0;
 
 	//Days
 	private boolean [] mArrayDays= new boolean[7];
@@ -105,7 +106,7 @@ public class PillEdit extends Activity {
 		populateFields();
 
 
-		cancelAlarms();
+		cancelAlarms(mAlarms);
 
 		//Listener para el boton de confirmar
 		confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -124,9 +125,9 @@ public class PillEdit extends Activity {
 					Toast toast1 = Toast.makeText(getApplicationContext(),R.string.error_hour, Toast.LENGTH_SHORT);
 					toast1.show();
 				} else {
-					updateAlarms();
 					setResult(RESULT_OK);
 					finish();
+					updateAlarms();
 				}
 			}
 
@@ -179,44 +180,14 @@ public class PillEdit extends Activity {
 
 	}
 
-	private void cancelAlarms(){
-		Calendar calendar = Calendar.getInstance();
-		Calendar currentDay;
-		int day=calendar.get(Calendar.DAY_OF_WEEK);
+	private void cancelAlarms(int alarms){
+		
 		Intent intent = new Intent(this, RepeatingAlarm.class);
-
-		for (int i=0; i<mArrayDays.length;i++){
-			//System.out.println("i="+i);
-			if ((day-1+i)==mArrayDays.length) day=day-7;
-			if(mArrayDays[day-1+i]){
-				String h;
-				int hourOfDay;
-				int min;
-
-				for (int j=0; j<mArrayHours.size(); j++){
-					//System.out.println("j="+j);
-					h=mArrayHours.get(j);
-					hourOfDay= Integer.parseInt(h.split(":")[0]);
-					min= Integer.parseInt(h.split(":")[1]);
-					currentDay=Calendar.getInstance();
-					currentDay.set(Calendar.HOUR_OF_DAY, hourOfDay);
-					currentDay.set(Calendar.MINUTE, min);
-					currentDay.set(Calendar.SECOND, 0);
-					if (i==0 && currentDay.get(Calendar.HOUR_OF_DAY) < Calendar.getInstance().get(Calendar.HOUR_OF_DAY) || (currentDay.get(Calendar.MINUTE) <= Calendar.getInstance().get(Calendar.MINUTE) &&currentDay.get(Calendar.HOUR_OF_DAY) == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)))
-						currentDay.add(Calendar.DAY_OF_YEAR, i+7);
-					else
-						currentDay.add(Calendar.DAY_OF_YEAR, i);
-					long firstTime= currentDay.getTimeInMillis();
-					//System.out.println(firstTime);
-					//System.out.println(currentDay.get(Calendar.DATE)+ "-" + currentDay.get(Calendar.HOUR_OF_DAY) +":"+ currentDay.get(Calendar.MINUTE));
-					//System.out.println(mRowId + " " + mRowId.intValue());
-					PendingIntent sender = PendingIntent.getBroadcast(this,
-							(int)firstTime, intent, 0);
-
-					AlarmManager am = (AlarmManager) PillEdit.this.getSystemService(Context.ALARM_SERVICE);
-					am.cancel(sender);
-				}
-			}
+		
+		for (int i=0; i<alarms; i++) {
+		PendingIntent sender = PendingIntent.getBroadcast(this, mRowId.intValue()*10000 + i, intent, 0);
+		AlarmManager am = (AlarmManager) PillEdit.this.getSystemService(Context.ALARM_SERVICE);
+		am.cancel(sender);
 		}
 	}
 
@@ -224,7 +195,10 @@ public class PillEdit extends Activity {
 	 * Actualiza las alarmas tras confirmar los cambios.
 	 */
 	private void updateAlarms(){
-
+		if (mRowId==null){
+			saveState();
+		}
+		mAlarms=0;
 		Calendar calendar = Calendar.getInstance();
 		Calendar currentDay;
 		int day=calendar.get(Calendar.DAY_OF_WEEK);
@@ -247,16 +221,18 @@ public class PillEdit extends Activity {
 					currentDay.set(Calendar.HOUR_OF_DAY, hourOfDay);
 					currentDay.set(Calendar.MINUTE, min);
 					currentDay.set(Calendar.SECOND, 0);
+					currentDay.set(Calendar.MILLISECOND, 0);
 					if (i==0 && currentDay.get(Calendar.HOUR_OF_DAY) < Calendar.getInstance().get(Calendar.HOUR_OF_DAY) || (currentDay.get(Calendar.MINUTE) <= Calendar.getInstance().get(Calendar.MINUTE) &&currentDay.get(Calendar.HOUR_OF_DAY) == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)))
 						currentDay.add(Calendar.DAY_OF_YEAR, i+7);
 					else
 						currentDay.add(Calendar.DAY_OF_YEAR, i);
 					long firstTime= currentDay.getTimeInMillis();
 					PendingIntent sender = PendingIntent.getBroadcast(this,
-							(int)firstTime, intent, 0);
+							 mRowId.intValue()*10000+ mAlarms, intent, 0);
 
 					AlarmManager am = (AlarmManager) PillEdit.this.getSystemService(Context.ALARM_SERVICE);
 					am.setRepeating(AlarmManager.RTC_WAKEUP, firstTime, 7*24*3600*1000, sender);
+					mAlarms++;
 				}
 			}
 		}
@@ -383,6 +359,8 @@ public class PillEdit extends Activity {
 			mArrayHours=new ArrayList<String>(Arrays.asList(hourString.split(" - ")));
 
 			updateTextTime();
+			//Fija el numero de alarmas
+			mAlarms=pillcursor.getInt(pillcursor.getColumnIndexOrThrow(PillsDbAdapter.KEY_ALARMS));
 		}
 	}
 
@@ -415,12 +393,12 @@ public class PillEdit extends Activity {
 			String days = mDaysText.getText().toString();
 			String hour = hourArrayToString();
 			if (mRowId == null) {
-				long id = mDbHelper.createPill(user, pill, days, hour);
+				long id = mDbHelper.createPill(user, pill, days, hour, mAlarms);
 				if (id > 0) {
 					mRowId = id;
 				}
 			} else {
-				mDbHelper.updatePill(mRowId, user, pill, days, hour);
+				mDbHelper.updatePill(mRowId, user, pill, days, hour, mAlarms);
 			}
 		}
 	}
