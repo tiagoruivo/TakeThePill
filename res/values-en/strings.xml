@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+	<!-- App -->
+    <string name="app_name">TakeThePill</string>
+    <string name="no_pills">No medicines yet, press menu button.</string>
+    <string name="about">This is an aplication for remind you to take your pills.\n\nIt was developed by two students called Alvaro Martin and Tiago Pais at the School of Telecommunications Engineering of the Polytechnic University of Madrid (ETSIT-UPM) in May 2012, for the course Communications Software, given by the Department of Telematic Systems Engineering (DIT).\n\nFeel free to contact us at\nt.paispittade@alumnos.upm.es\nalvaro.martin.rodriguez@alumnos.upm.es\n\n</string>
+    <string name="about_title">About TakeThePill</string>
+    <string name="title">Alarm TakeThePill</string>
+    <string name="help">Press menu button to add pill reminders or to change preferences.\n\nIn the edit view, you can configure new alarms or delete old ones.\n\nPress a few seconds over a pill to edit or delete it.\n\nTo cancel an alarm, just press the notification icon at the notification bar.\n\nIt will give you the option to warn somebody by email or by phone, or even warn yourself by email.</string>
+
+    <string name="help_title">Help</string>
+    <string name="pill_view_title">Pill</string>
+    <string name="preferences_title">Preferences</string>
+    <string name="user">User</string>
+    <string name="pill">Pill</string>
+    <string name="hour">Hour</string>
+    <string name="hours">Hours</string>
+    <string name="days">Days</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>    
+    <string name="warn_someone">Warn someone</string>
+    <string name="warn">Warn</string>
+    
+    <!-- Descriptions -->    
+    <string name="pill_description">Pill Image</string>
+    <string name="email_description">Email Button</string>
+    <string name="call_description">Call Button</string>
+    
+    
+    <!-- Menus -->
+    <string name="menu_insert">Add Pill</string>
+    <string name="menu_prefs">Change Preferences</string>
+    <string name="menu_help">Help</string>
+    <string name="menu_about">About TakeThePill&#8230;</string> <!-- "&#8230;" = "..." -->
+    <string name="menu_delete">Delete Pill</string>
+    <string name="menu_edit">Edit Pill</string>
+    <string name="edit_pill">Edit Pill</string>
+    <string name="changed_prefs">Preferences were changed</string>
+    
+    <!-- Buttons -->
+    <string name="confirm">Confirm</string>
+    <string name="add_time">Add Time</string>
+    <string name="delete_time">Delete Time</string>
+    <string name="add_days">Add Days</string>
+    <string name="remove_time">Remove</string>
+    <string name="send_email">Send Email</string>
+    <string name="call">Call someone</string>
+    <string name="send_me_email">Send me an email</string>
+    <string name="contacts">Search in contacts</string>
+    
+    <!-- Prefs -->
+    <string name="checkbox_alarm">Alarms Enabled</string>
+    <string name="hint_email">Please, set an email</string> 
+    <string name="hint_phone">Please, set a phone</string>   
+    
+    <!-- No things -->
+    <string name="no_time">No time yet</string>
+    <string name="no_days">No days yet</string>
+    <string name="no_hours">No hours yet</string>
+    
+    <!-- Dialogs -->
+    <string name="alert_dialog_multi_choice">Select a day</string>
+    <string name="alert_dialog_remove_time">Hours to delete</string>
+    <string name="alert_dialog_ok">OK</string>
+    <string name="alert_dialog_cancel">Cancel</string>    
+    
+    <!-- Errors  -->
+    <string name="error_hour">Please select at least one hour</string>
+    <string name="error_day">Please select at least one day</string>
+    <string name="error_user">Please type the user name</string>
+    <string name="error_pill">Please type a pill name</string>
+    <string name="error_email">Please set a valid email adress</string>
+    <string name="error_phone">Please set a valid phone number</string>
+    <string name="error_no_mail_clients">There are no email clients installed</string>
+    <string name="error_no_mail_preferences">Please, set your email address in app preferences</string>
+    
+    <!-- Email -->
+    <string name="subject">TakeThePill warning</string>
+    <string name="body1">This is a warning for </string>
+    <string name="body2"> that has to take </string>
+    <string name="body3"> at </string>
+    
+    
+    <!-- Dialogo borrar -->
+    <string name="delete_question">Delete?</string>
+    <string name="sure_question">Are you sure?</string>
+    
+
+</resources>
