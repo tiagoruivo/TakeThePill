@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+	<!-- App -->
+    <string name="app_name">TakeThePill</string>
+    <string name="no_pills">Aun no se han añadido medicinas, para hacerlo pulse el botón menu.</string>
+    <string name="about">Esta es una aplicacion que sirve para recordarte que te tomes tus medicamentos.\n\nFue desarrollada por dos estudiantes llamados Alvaro Martín y Tiago Pais en la Escuela Técnica Superior de Ingenieros de Telecomunicación de la Universidad Politécnica de Madrid (ETSIT-UPM) en Mayo de 2012, para la asignatura Software de Comunicaciones, impartida por el Departamento de Ingeniería de Sistemas Telemáticos (DIT).\n\nContacto: \nt.paispittade@alumnos.upm.es\nalvaro.martin.rodriguez@alumnos.upm.es\n\n</string>
+    <string name="about_title">Acerca de TakeThePill</string>
+    <string name="title">Alarma TakeThePill</string>
+    <string name="help">Pulsa el botón menu para añadir recordatorios de medicinas o para cambiar las preferencias.\n\nEn la vista de edición, puedes configurar nuevas alarmas o borrar las viejas.\n\nPulsa unos pocos segundos sobre una medicina para editarla o borrarla.\n\nPara cancelar una alarma, solo hay que pulsar el icono de notificaciones en la barra de notificaciones.\n\nSe te dará la posibilidad de avisar a alguien por email o por teléfono, o incluso mandarte un email a ti mismo.</string>
+
+    <string name="help_title">Ayuda</string>
+    <string name="pill_view_title">Medicina</string>
+    <string name="preferences_title">Preferencias</string>
+    <string name="user">Usuario</string>
+    <string name="pill">Medicina</string>
+    <string name="hour">Hora</string>
+    <string name="hours">Horas</string>
+    <string name="days">Días</string>
+    <string name="email">Email</string>
+    <string name="phone">Teléfono</string>    
+    <string name="warn_someone">Avisar a alguien</string>
+    <string name="warn">Avisar a</string>
+    
+    <!-- Descriptions -->    
+    <string name="pill_description">Imagen de medicina</string>
+    <string name="email_description">Botón de Email</string>
+    <string name="call_description">Botón de llamar</string>
+    
+    
+    <!-- Menus -->
+    <string name="menu_insert">Añadir Medicina</string>
+    <string name="menu_prefs">Cambiar Preferencias</string>
+    <string name="menu_help">Ayuda</string>
+    <string name="menu_about">Acerca de TakeThePill&#8230;</string> <!-- "&#8230;" = "..." -->
+    <string name="menu_delete">Borrar Medicina</string>
+    <string name="menu_edit">Editar Medicina</string>
+    <string name="edit_pill">Editar Medicina</string>
+    <string name="changed_prefs">Las Preferencias fueron cambiadas</string>
+    
+    <!-- Buttons -->
+    <string name="confirm">Confirmar</string>
+    <string name="add_time">Añadir Horas</string>
+    <string name="delete_time">Borrar Horas</string>
+    <string name="add_days">Añadir Días</string>
+    <string name="remove_time">Borrar</string>
+    <string name="send_email">Enviar Email</string>
+    <string name="call">Llamar a alguien</string>
+    <string name="send_me_email">Mándame un email</string>
+    <string name="contacts">Buscar en los contactos</string>
+    
+    <!-- Prefs -->
+    <string name="checkbox_alarm">Permitir Alarmas</string>
+    <string name="hint_email">Escriba un email</string> 
+    <string name="hint_phone">Escriba un teléfono</string>   
+    
+    <!-- No things -->
+    <string name="no_time">No hay horas aún</string>
+    <string name="no_days">No hay días aún</string>
+    <string name="no_hours">No hay horas aún</string>
+    
+    <!-- Dialogs -->
+    <string name="alert_dialog_multi_choice">Seleccione un día</string>
+    <string name="alert_dialog_remove_time">Horas para eliminar</string>
+    <string name="alert_dialog_ok">OK</string>
+    <string name="alert_dialog_cancel">Cancelar</string>    
+    
+    <!-- Errors  -->
+    <string name="error_hour">Por favor seleccione al menos una hora</string>
+    <string name="error_day">Por favor seleccione al menos un día</string>
+    <string name="error_user">Por favor escriba un nombre de usuario</string>
+    <string name="error_pill">Por favor escriba el nombre del medicamento</string>
+    <string name="error_email">Por favor escriba una dirección de email válida</string>
+    <string name="error_phone">Por favor escriba un número de teléfono válido</string>
+    <string name="error_no_mail_clients">No hay clientes de email instalados</string>
+    <string name="error_no_mail_preferences">Por favor, configura tu cuenta de email en preferencias</string>
+    
+    <!-- Email -->
+    <string name="subject">Aviso de TakeThePill</string>
+    <string name="body1">Este es un aviso para </string>
+    <string name="body2"> que tiene que tomar </string>
+    <string name="body3"> a las </string>
+    
+    <!-- Dialogo borrar -->
+    <string name="delete_question">¿Borrar?</string>
+    <string name="sure_question">¿Estás seguro?</string>
+    
+
+</resources>

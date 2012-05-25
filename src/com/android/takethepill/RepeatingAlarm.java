@@ -10,12 +10,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-/**
- * This is an example of implement an {@link BroadcastReceiver} for an alarm that
- * should occur once.
- */
-public class RepeatingAlarm extends BroadcastReceiver
-{
+
+public class RepeatingAlarm extends BroadcastReceiver{
 	String ns = Context.NOTIFICATION_SERVICE;
 	NotificationManager mNotificationManager;
 	private static final int HELLO_ID = 1;
@@ -48,10 +44,12 @@ public class RepeatingAlarm extends BroadcastReceiver
 		notification.defaults |= Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND;
 		notification.flags |=Notification.FLAG_AUTO_CANCEL;
 		notification.flags |=Notification.FLAG_INSISTENT;
+		
+		long[] vibrate = {0,500,500,500};
+		notification.vibrate = vibrate;
 
 
-		if(TakeThePill.getAlarmsEnabled())
-			mNotificationManager.notify(HELLO_ID, notification);
+		if(TakeThePill.getAlarmsEnabled()) mNotificationManager.notify(HELLO_ID, notification);
 
 	}
 }

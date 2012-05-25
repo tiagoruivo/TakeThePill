@@ -7,7 +7,7 @@
     <string name="about">This is an aplication for remind you to take your pills.\n\nIt was developed by two students called Alvaro Martin and Tiago Pais at the School of Telecommunications Engineering of the Polytechnic University of Madrid (ETSIT-UPM) in May 2012, for the course Communications Software, given by the Department of Telematic Systems Engineering (DIT).\n\nFeel free to contact us at\nt.paispittade@alumnos.upm.es\nalvaro.martin.rodriguez@alumnos.upm.es\n\n</string>
     <string name="about_title">About TakeThePill</string>
     <string name="title">Alarm TakeThePill</string>
-    <string name="help">Press menu button to add pill reminders or to change preferences.\n\nIn the edit view, you can configure new alarms or delete old ones.\n\nPress a few seconds over a pill to edit or delete it.\n\nTo cancel an alarm, just press the Notification Icon at the Notification Bar.\n\nIt will give you the option to warn somebody by email or by phone, or even warn yourself by email.</string>
+    <string name="help">Press menu button to add pill reminders or to change preferences.\n\nIn the edit view, you can configure new alarms or delete old ones.\n\nPress a few seconds over a pill to edit or delete it.\n\nTo cancel an alarm, just press the notification icon at the notification bar.\n\nIt will give you the option to warn somebody by email or by phone, or even warn yourself by email.</string>
 
     <string name="help_title">Help</string>
     <string name="pill_view_title">Pill</string>
@@ -80,6 +80,11 @@
     <string name="body1">This is a warning for </string>
     <string name="body2"> that has to take </string>
     <string name="body3"> at </string>
+    
+    
+    <!-- Dialogo borrar -->
+    <string name="delete_question">Delete?</string>
+    <string name="sure_question">Are you sure?</string>
     
 
 </resources>

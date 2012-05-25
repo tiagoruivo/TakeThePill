@@ -51,8 +51,8 @@
     
     <!-- Prefs -->
     <string name="checkbox_alarm">Alarmes activados</string>
-    <string name="hint_email">Por favor, introduza um email</string> 
-    <string name="hint_phone">Por favor, introduza un telefone</string>   
+    <string name="hint_email">Introduza um email</string> 
+    <string name="hint_phone">Introduza un telefone</string>   
     
     <!-- No things -->
     <string name="no_time">Sem horas</string>
@@ -80,6 +80,10 @@
     <string name="body1">Este é um aviso para </string>
     <string name="body2"> que tem de tomar </string>
     <string name="body3"> às </string>
+    
+    <!-- Dialogo borrar -->
+    <string name="delete_question">Eliminar?</string>
+    <string name="sure_question">Tem a certeza?</string>
     
 
 </resources>

@@ -129,10 +129,10 @@ public class TakeThePill extends ListActivity {
 		case R.id.delete_id:
 
 			AlertDialog.Builder adb=new AlertDialog.Builder(TakeThePill.this);
-			adb.setTitle("Delete?");
-			adb.setMessage("Are you sure?");
-			adb.setNegativeButton("Cancel", null);
-			adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+			adb.setTitle(getResources().getString(R.string.delete_question));
+			adb.setMessage(getResources().getString(R.string.sure_question));
+			adb.setNegativeButton(getResources().getString(R.string.alert_dialog_cancel), null);
+			adb.setPositiveButton(getResources().getString(R.string.alert_dialog_ok), new AlertDialog.OnClickListener() {
 
 				//Gestion del boton que confirma la eliminacion
 				public void onClick(DialogInterface dialog, int which) {
